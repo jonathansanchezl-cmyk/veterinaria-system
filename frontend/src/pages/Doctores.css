@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #f4f7fb;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.doctores-container {
+  padding: 30px;
+  min-height: 100vh;
+}
+
+.header h1 {
+  color: #1d3557;
+}
+
+.header p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.card-form {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.grid-form input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.btn-guardar {
+  margin-top: 20px;
+  background: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tabla-container {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #1d3557;
+  color: white;
+}
+
+th, td {
+  padding: 14px;
+  text-align: center;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.estado {
+  background: #d8f3dc;
+  color: #1b4332;
+  padding: 6px 10px;
+  border-radius: 20px;
+}
+
+.btn-eliminar {
+  background: #e63946;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mensaje-ok {
+  background: #d8f3dc;
+  color: #1b4332;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
