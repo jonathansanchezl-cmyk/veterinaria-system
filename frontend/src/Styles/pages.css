@@ -1,0 +1,19 @@
+.pageCounter{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:#64748B;
+
+    font-size:14px;
+
+}
+
+.pageCounter strong{
+
+    color:#0F172A;
+
+    font-weight:700;
+
+}

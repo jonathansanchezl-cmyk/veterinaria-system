@@ -1,95 +1,68 @@
-const { DataTypes } =
-require("sequelize");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-const sequelize =
-require("../config/database");
+const Mascota = sequelize.define(
+    "mascotas",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
 
-const Mascota =
-sequelize.define(
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
 
-  "mascotas",
+        especie: {
+            type: DataTypes.STRING
+        },
 
-  {
+        raza: {
+            type: DataTypes.STRING
+        },
 
-    id: {
+        edad: {
+            type: DataTypes.INTEGER
+        },
 
-      type:
-        DataTypes.INTEGER,
+        sexo: {
+            type: DataTypes.STRING
+        },
 
-      primaryKey: true,
+        // ==================================================
+        // NUEVO CAMPO (RELACIÓN CON CLIENTES)
+        // ==================================================
 
-      autoIncrement: true
+        id_cliente: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
 
-    },
+        // ==================================================
+        // CAMPO ANTIGUO
+        // Se mantiene temporalmente para compatibilidad
+        // ==================================================
 
-    nombre: {
+        propietario: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
 
-      type:
-        DataTypes.STRING
+        foto: {
+            type: DataTypes.STRING
+        },
 
-    },
-
-    especie: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    raza: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    edad: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    sexo: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    propietario: {
-
-      type:
-        DataTypes.STRING
+        estado: {
+            type: DataTypes.STRING
+        }
 
     },
-
-    foto: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    estado: {
-
-      type:
-        DataTypes.STRING
-
+    {
+        tableName: "mascotas",
+        timestamps: false
     }
-
-  },
-
-  {
-
-    tableName:
-      "mascotas",
-
-    timestamps: false
-
-  }
-
 );
 
-module.exports =
-Mascota;
+module.exports = Mascota;

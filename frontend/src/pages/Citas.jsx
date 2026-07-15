@@ -1,675 +1,406 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
-import axios from "axios";
+import MainLayout from "../components/layout/MainLayout";
+import AppointmentToolbar from "../components/citas/AppointmentToolbar";
+import AppointmentTable from "../components/citas/AppointmentTable";
+import AppointmentModal from "../components/citas/AppointmentModal";
+import Pagination from "../components/common/Pagination";
 
-import Swal from "sweetalert2";
-
-import "./Citas.css";
+import { useCitas } from "../hooks/useCitas";
 
 function Citas() {
 
-  // ======================================
-  // STATES
-  // ======================================
+    const {
 
-  const [citas, setCitas] = useState([]);
+        citas,
 
-  const [mascotas, setMascotas] = useState([]);
+        loading,
 
-  const [doctores, setDoctores] = useState([]);
+        cargarCitas,
 
-  const [form, setForm] = useState({
+        borrarCita
 
-    mascota: "",
+    } = useCitas();
 
-    propietario: "",
+    // ===============================
+    // MODAL
+    // ===============================
 
-    doctor: "",
+    const [modalOpen, setModalOpen] = useState(false);
 
-    fecha: "",
+    const [selectedCita, setSelectedCita] = useState(null);
 
-    hora: "",
+    // ===============================
+    // FILTROS
+    // ===============================
 
-    motivo: "",
+    const [search, setSearch] = useState("");
 
-    costo: "",
+    const [estado, setEstado] = useState("");
 
-    estado: "CONFIRMADO"
+    const [fecha, setFecha] = useState("");
 
-  });
+    // ===============================
+    // ORDENAMIENTO
+    // ===============================
 
-  // ======================================
-  // LOAD DATA
-  // ======================================
+    const [sortField, setSortField] = useState("fecha");
 
-  useEffect(() => {
+    const [sortDirection, setSortDirection] = useState("asc");
 
-    obtenerCitas();
+    // ===============================
+    // PAGINACION
+    // ===============================
 
-    obtenerMascotas();
+    const [currentPage, setCurrentPage] = useState(1);
 
-    obtenerDoctores();
+    const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  }, []);
+    // ===============================
+    // MODAL
+    // ===============================
 
-  // ======================================
-  // OBTENER CITAS
-  // ======================================
+    const abrirNueva = () => {
 
-  const obtenerCitas = async () => {
+        setSelectedCita(null);
 
-    try {
+        setModalOpen(true);
 
-      const response = await axios.get(
+    };
 
-        "http://localhost:4000/api/citas"
+    const editar = (cita) => {
 
-      );
+        setSelectedCita(cita);
 
-      setCitas(response.data);
+        setModalOpen(true);
 
-    } catch (error) {
+    };
 
-      console.log(error);
+    const cerrar = () => {
 
-    }
+        setModalOpen(false);
 
-  };
+        setSelectedCita(null);
 
-  // ======================================
-  // OBTENER MASCOTAS
-  // ======================================
+    };
 
-  const obtenerMascotas = async () => {
+    // ===============================
+    // FILTRAR
+    // ===============================
 
-    try {
+    const citasFiltradas = useMemo(() => {
 
-      const response = await axios.get(
+        return citas.filter((cita) => {
 
-        "http://localhost:4000/api/mascotas"
+            const texto = search.trim().toLowerCase();
 
-      );
+            const coincideTexto =
 
-      setMascotas(response.data);
+                !texto ||
 
-    } catch (error) {
+                cita.mascota?.toLowerCase().includes(texto) ||
 
-      console.log(error);
+                cita.propietario?.toLowerCase().includes(texto) ||
 
-    }
+                cita.doctor?.toLowerCase().includes(texto) ||
 
-  };
+                cita.motivo?.toLowerCase().includes(texto);
 
-  // ======================================
-  // OBTENER DOCTORES
-  // ======================================
+            const coincideEstado =
 
-  const obtenerDoctores = async () => {
+                !estado ||
 
-    try {
+                cita.estado === estado;
 
-      const response = await axios.get(
+            const coincideFecha =
 
-        "http://localhost:4000/api/doctores"
+                !fecha ||
 
-      );
+                cita.fecha === fecha;
 
-      setDoctores(response.data);
+            return (
 
-    } catch (error) {
+                coincideTexto &&
 
-      console.log(error);
+                coincideEstado &&
 
-    }
+                coincideFecha
 
-  };
+            );
 
-  // ======================================
-  // HANDLE CHANGE
-  // ======================================
+        });
 
-  const handleChange = (e) => {
+    }, [
 
-    setForm({
+        citas,
 
-      ...form,
+        search,
 
-      [e.target.name]: e.target.value
+        estado,
 
-    });
+        fecha
 
-  };
+    ]);
 
-  // ======================================
-  // REGISTRAR CITA
-  // ======================================
+    // ===============================
+    // ORDENAR
+    // ===============================
 
-  const registrarCita = async () => {
+    const citasOrdenadas = useMemo(() => {
 
-    if (
+        const lista = [...citasFiltradas];
 
-      !form.mascota ||
+        lista.sort((a, b) => {
 
-      !form.propietario ||
+            let valorA = a[sortField];
 
-      !form.doctor ||
+            let valorB = b[sortField];
 
-      !form.fecha ||
+            if (sortField === "fecha") {
 
-      !form.hora ||
+                valorA = new Date(valorA);
 
-      !form.motivo ||
+                valorB = new Date(valorB);
 
-      !form.costo
+            }
 
-    ) {
+            if (sortField === "costo") {
 
-      Swal.fire({
+                valorA = Number(valorA);
 
-        title: "Campos incompletos",
+                valorB = Number(valorB);
 
-        text: "Debe completar todos los campos",
+            }
 
-        icon: "warning"
+            if (
 
-      });
+                typeof valorA === "string" &&
 
-      return;
+                typeof valorB === "string"
 
-    }
+            ) {
 
-    try {
+                valorA = valorA.toUpperCase();
 
-      await axios.post(
+                valorB = valorB.toUpperCase();
 
-        "http://localhost:4000/api/citas",
+            }
 
-        form
+            if (valorA < valorB) {
 
-      );
+                return sortDirection === "asc"
 
-      Swal.fire({
+                    ? -1
 
-        title: "Cita registrada",
+                    : 1;
 
-        text: "La cita fue registrada correctamente",
+            }
 
-        icon: "success",
+            if (valorA > valorB) {
 
-        timer: 2000,
+                return sortDirection === "asc"
 
-        showConfirmButton: false
+                    ? 1
 
-      });
+                    : -1;
 
-      setForm({
+            }
 
-        mascota: "",
+            return 0;
 
-        propietario: "",
+        });
 
-        doctor: "",
+        return lista;
 
-        fecha: "",
+    }, [
 
-        hora: "",
+        citasFiltradas,
 
-        motivo: "",
+        sortField,
 
-        costo: "",
+        sortDirection
 
-        estado: "CONFIRMADO"
+    ]);
 
-      });
+    // ===============================
+    // PAGINACION
+    // ===============================
 
-      obtenerCitas();
+    const indexUltimo = currentPage * itemsPerPage;
 
-    } catch (error) {
+    const indexPrimero = indexUltimo - itemsPerPage;
 
-      console.log(error);
+    const citasPagina = citasOrdenadas.slice(
 
-      Swal.fire({
+        indexPrimero,
 
-        title: "Error",
+        indexUltimo
 
-        text: "No se pudo registrar la cita",
+    );
+        // ===============================
+    // RENDER
+    // ===============================
 
-        icon: "error"
+    return (
 
-      });
+        <MainLayout>
 
-    }
+            <div className="pageHeader">
 
-  };
+                <div>
 
-  // ======================================
-  // ELIMINAR CITA
-  // ======================================
+                    <h1>
 
-  const eliminarCita = async (id) => {
+                        Gestión de Citas
 
-    const resultado = await Swal.fire({
+                    </h1>
 
-      title: "Confirmar eliminación",
+                    <p>
 
-      text: "¿Desea eliminar esta cita?",
+                        Administre todas las citas de la clínica veterinaria.
 
-      icon: "warning",
+                    </p>
 
-      showCancelButton: true,
+                    <small className="pageCounter">
 
-      confirmButtonColor: "#ef4444",
+                        Mostrando
 
-      cancelButtonColor: "#6b7280",
+                        <strong>
 
-      confirmButtonText: "Sí, eliminar",
+                            {" "}
 
-      cancelButtonText: "Cancelar"
+                            {citasPagina.length}
 
-    });
+                            {" "}
 
-    if (!resultado.isConfirmed) {
+                        </strong>
 
-      return;
+                        de
 
-    }
+                        <strong>
 
-    try {
+                            {" "}
 
-      await axios.delete(
+                            {citasOrdenadas.length}
 
-        `http://localhost:4000/api/citas/${id}`
+                            {" "}
 
-      );
+                        </strong>
 
-      Swal.fire({
+                        citas filtradas
 
-        title: "Cita eliminada",
+                    </small>
 
-        text: "La cita fue eliminada correctamente",
+                </div>
 
-        icon: "success",
+            </div>
 
-        timer: 2000,
+            <AppointmentToolbar
 
-        showConfirmButton: false
+                onNew={abrirNueva}
 
-      });
+                onSearch={(valor) => {
 
-      obtenerCitas();
+                    setSearch(valor);
 
-    } catch (error) {
+                    setCurrentPage(1);
 
-      console.log(error);
+                }}
 
-      Swal.fire({
+                onEstadoChange={(valor) => {
 
-        title: "Error",
+                    setEstado(valor);
 
-        text: "No se pudo eliminar la cita",
+                    setCurrentPage(1);
 
-        icon: "error"
+                }}
 
-      });
+                onFechaChange={(valor) => {
 
-    }
+                    setFecha(valor);
 
-  };
+                    setCurrentPage(1);
 
-  // ======================================
-  // RENDER
-  // ======================================
+                }}
 
-  return (
+            />
 
-    <div className="citas-container">
+            <AppointmentTable
 
-      <h1 className="titulo-citas">
+                citas={citasPagina}
 
-        Gestión de Citas
+                loading={loading}
 
-      </h1>
+                onEdit={editar}
 
-      <p className="subtitulo-citas">
+                onDelete={borrarCita}
 
-        Administra las citas veterinarias del sistema
+                sortField={sortField}
 
-      </p>
+                sortDirection={sortDirection}
 
-      {/* ====================================== */}
-      {/* FORMULARIO */}
-      {/* ====================================== */}
+                onSort={(campo) => {
 
-      <div className="formulario-citas">
+                    if (campo === sortField) {
 
-        {/* MASCOTA */}
+                        setSortDirection((direccion) =>
 
-        <select
+                            direccion === "asc"
 
-          name="mascota"
+                                ? "desc"
 
-          value={form.mascota}
+                                : "asc"
 
-          onChange={(e) => {
+                        );
 
-            const nombreMascota =
-              e.target.value;
+                    } else {
 
-            const mascotaSeleccionada =
-              mascotas.find(
+                        setSortField(campo);
 
-                (m) =>
-                  m.nombre === nombreMascota
-
-              );
-
-            setForm({
-
-              ...form,
-
-              mascota: nombreMascota,
-
-              propietario:
-                mascotaSeleccionada?.propietario || ""
-
-            });
-
-          }}
-
-          className="input-citas"
-
-        >
-
-          <option value="">
-
-            Seleccione Mascota
-
-          </option>
-
-          {mascotas.map((mascota) => (
-
-            <option
-
-              key={mascota.id}
-
-              value={mascota.nombre}
-
-            >
-
-              {mascota.nombre}
-
-            </option>
-
-          ))}
-
-        </select>
-
-        {/* PROPIETARIO AUTOMATICO */}
-
-        <input
-
-          type="text"
-
-          value={form.propietario}
-
-          className="input-citas"
-
-          placeholder="Propietario"
-
-          disabled
-
-        />
-
-        {/* DOCTOR */}
-
-        <select
-
-          name="doctor"
-
-          value={form.doctor}
-
-          onChange={handleChange}
-
-          className="input-citas"
-
-        >
-
-          <option value="">
-
-            Seleccione Doctor
-
-          </option>
-
-          {doctores.map((doctor) => (
-
-            <option
-
-              key={doctor.id}
-
-              value={doctor.nombres}
-
-            >
-
-              {doctor.nombres}
-
-            </option>
-
-          ))}
-
-        </select>
-
-        {/* FECHA */}
-
-        <input
-
-          type="date"
-
-          name="fecha"
-
-          value={form.fecha}
-
-          onChange={handleChange}
-
-          className="input-citas"
-
-        />
-
-        {/* HORA */}
-
-        <input
-
-          type="time"
-
-          name="hora"
-
-          value={form.hora}
-
-          onChange={handleChange}
-
-          className="input-citas"
-
-        />
-
-        {/* MOTIVO */}
-
-        <input
-
-          type="text"
-
-          name="motivo"
-
-          placeholder="Motivo"
-
-          value={form.motivo}
-
-          onChange={handleChange}
-
-          className="input-citas"
-
-        />
-
-        {/* COSTO */}
-
-        <input
-
-          type="number"
-
-          name="costo"
-
-          placeholder="Costo"
-
-          value={form.costo}
-
-          onChange={handleChange}
-
-          className="input-citas"
-
-        />
-
-        {/* ESTADO */}
-
-        <select
-
-          name="estado"
-
-          value={form.estado}
-
-          onChange={handleChange}
-
-          className="input-citas"
-
-        >
-
-          <option value="CONFIRMADO">
-
-            CONFIRMADO
-
-          </option>
-
-          <option value="PENDIENTE">
-
-            PENDIENTE
-
-          </option>
-
-          <option value="ATENDIDO">
-
-            ATENDIDO
-
-          </option>
-
-        </select>
-
-        {/* BOTON */}
-
-        <button
-
-          onClick={registrarCita}
-
-          className="btn-guardar-cita"
-
-        >
-
-          Registrar Cita
-
-        </button>
-
-      </div>
-
-      {/* ====================================== */}
-      {/* TABLA */}
-      {/* ====================================== */}
-
-      <div className="tabla-citas">
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>ID</th>
-
-              <th>Mascota</th>
-
-              <th>Propietario</th>
-
-              <th>Doctor</th>
-
-              <th>Fecha</th>
-
-              <th>Hora</th>
-
-              <th>Motivo</th>
-
-              <th>Costo</th>
-
-              <th>Estado</th>
-
-              <th>Acciones</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            {citas.map((cita) => (
-
-              <tr key={cita.id}>
-
-                <td>{cita.id}</td>
-
-                <td>{cita.mascota}</td>
-
-                <td>{cita.propietario}</td>
-
-                <td>{cita.doctor}</td>
-
-                <td>{cita.fecha}</td>
-
-                <td>{cita.hora}</td>
-
-                <td>{cita.motivo}</td>
-
-                <td>S/. {cita.costo}</td>
-
-                <td>{cita.estado}</td>
-
-                <td>
-
-                  <button
-
-                    className="btn-eliminar"
-
-                    onClick={() =>
-
-                      eliminarCita(cita.id)
+                        setSortDirection("asc");
 
                     }
 
-                  >
+                }}
 
-                    Eliminar
+            />
 
-                  </button>
+            <Pagination
 
-                </td>
+                totalItems={citasOrdenadas.length}
 
-              </tr>
+                currentPage={currentPage}
 
-            ))}
+                itemsPerPage={itemsPerPage}
 
-          </tbody>
+                onPageChange={setCurrentPage}
 
-        </table>
+                onItemsPerPageChange={(cantidad) => {
 
-      </div>
+                    setItemsPerPage(cantidad);
 
-    </div>
+                    setCurrentPage(1);
 
-  );
+                }}
 
-}
+            />
+
+            <AppointmentModal
+
+                    isOpen={modalOpen}
+
+                    cita={selectedCita}
+
+                    onClose={cerrar}
+
+                    onSuccess={cargarCitas}
+
+
+            />
+
+        </MainLayout>
+
+    );
+    }
 
 export default Citas;

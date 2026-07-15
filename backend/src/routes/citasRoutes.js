@@ -1,45 +1,55 @@
-const express =
-require("express");
+const express = require("express");
 
-const router =
-express.Router();
+const router = express.Router();
 
 const {
 
-  obtenerCitas,
+    obtenerCitas,
 
-  crearCita,
+    obtenerCitaPorId,
 
-  eliminarCita
+    crearCita,
 
-} = require(
-  "../controllers/citasController"
-);
+    actualizarCita,
+
+    eliminarCita
+
+} = require("../controllers/citasController");
+
 
 // ======================================
-// RUTAS CITAS
+// LISTAR TODAS LAS CITAS
 // ======================================
 
-// OBTENER
+router.get("/", obtenerCitas);
 
-router.get(
-  "/",
-  obtenerCitas
-);
 
+// ======================================
+// OBTENER UNA CITA
+// ======================================
+
+router.get("/:id", obtenerCitaPorId);
+
+
+// ======================================
 // CREAR
+// ======================================
 
-router.post(
-  "/",
-  crearCita
-);
+router.post("/", crearCita);
 
+
+// ======================================
+// ACTUALIZAR
+// ======================================
+
+router.put("/:id", actualizarCita);
+
+
+// ======================================
 // ELIMINAR
+// ======================================
 
-router.delete(
-  "/:id",
-  eliminarCita
-);
+router.delete("/:id", eliminarCita);
 
-module.exports =
-router;
+
+module.exports = router;

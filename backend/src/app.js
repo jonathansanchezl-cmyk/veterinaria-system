@@ -6,11 +6,10 @@ require("cors");
 
 require("dotenv").config();
 
-const sequelize =
-require("./config/database");
+const sequelize = require("./config/database");
+require("./models");
 
-const app =
-express();
+const app = express();
 
 // ======================================
 // MIDDLEWARES

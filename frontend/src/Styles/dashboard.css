@@ -1,0 +1,1161 @@
+/*==================================================
+DASHBOARD CARDS
+==================================================*/
+
+.dashboardCard{
+
+    background:#FFF;
+
+    border-radius:24px;
+
+    padding:26px;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.05);
+
+    transition:.25s;
+
+    min-height:150px;
+
+}
+
+.dashboardCard:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 20px 40px rgba(15,23,42,.08);
+
+}
+
+
+
+
+.kpiCard{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    min-height:140px;
+
+    transition:.30s;
+
+}
+
+.kpiCard:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.kpiIcon{
+
+    width:68px;
+
+    height:68px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#FFF;
+
+    font-size:28px;
+
+    flex-shrink:0;
+
+}
+
+.kpiContent{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.kpiTitle{
+
+    font-size:14px;
+
+    color:#64748B;
+
+    margin-bottom:6px;
+
+}
+
+.kpiValue{
+
+    font-size:38px;
+
+    color:#183B66;
+
+    font-weight:700;
+
+    line-height:1;
+
+}
+
+.kpiTrend{
+
+    margin-top:10px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.kpiSubtitle{
+
+    margin-top:4px;
+
+    font-size:13px;
+
+    color:#94A3B8;
+
+}
+
+@media(max-width:1700px){
+
+.dashboardCards{
+
+grid-template-columns:repeat(3,1fr);
+
+}
+
+}
+
+@media(max-width:1200px){
+
+.dashboardCards{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboardCards{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+/*=========================================================
+DASHBOARD BASE
+=========================================================*/
+
+.dashboardContainer{
+
+    width:100%;
+
+    padding:35px;
+
+}
+
+.dashboardTitle{
+
+    font-size:36px;
+
+    color:#183B66;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.dashboardSubtitle{
+
+    color:#64748B;
+
+    font-size:16px;
+
+}
+
+.dashboardPremium{
+
+    display:grid;
+
+    grid-template-columns:1.2fr 1fr 1.25fr;
+
+    grid-template-areas:
+
+        "agenda upcoming income"
+
+        "vets species recent";
+
+    gap:24px;
+
+    margin-top:25px;
+
+}
+
+
+
+
+
+/*======================================================
+ KPI CARDS
+======================================================*/
+
+.dashboardCards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+
+    gap:22px;
+
+    margin-bottom:28px;
+
+}
+
+
+
+.dashboardCard{
+
+    background:#F6F9FC;
+
+    border-radius:18px;
+
+    padding:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
+
+    transition:.3s;
+
+}
+
+.dashboardCard:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.dashboardCardIcon{
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+
+}
+
+.dashboardCardIcon svg{
+
+    width:34px;
+
+    height:34px;
+
+    color:#FFF;
+
+}
+
+
+
+.dashboardCardInfo h2{
+
+    font-size:46px;
+
+    line-height:46px;
+
+}
+
+
+.dashboardCardInfo small{
+
+    color:#64748B;
+
+    font-size:14px;
+
+}
+
+.dashboardCardInfo h2{
+
+    font-size:34px;
+
+    color:#183B66;
+
+    margin:6px 0;
+
+}
+
+.dashboardCardInfo span{
+
+    color:#22C55E;
+
+    font-weight:600;
+
+}
+
+
+@media(max-width:1400px){
+
+.dashboardCards{
+
+grid-template-columns:repeat(3,1fr);
+
+}
+
+}
+
+@media(max-width:900px){
+
+.dashboardCards{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:650px){
+
+.dashboardCards{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+/*=============================================
+AGENDA
+==============================================*/
+
+.dashboardPremium{
+
+    display:grid;
+
+    grid-template-columns:repeat(12,1fr);
+
+    grid-auto-rows:minmax(160px,auto);
+
+    gap:22px;
+
+    margin-top:25px;
+
+}
+
+
+
+.agendaPanel{
+
+    background:#FFF;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+    padding:25px;
+
+}
+
+.panelHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.panelHeader h2{
+
+    color:#183B66;
+
+    font-size:22px;
+
+}
+
+.panelHeader button{
+
+    border:none;
+
+    background:#22C55E;
+
+    color:white;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.agendaItem{
+
+    display:grid;
+
+    grid-template-columns:110px 1.7fr 1.3fr 120px;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #EEF2F7;
+
+}
+
+.agendaItem:last-child{
+
+    border-bottom:none;
+
+}
+
+
+
+.agendaItem:last-child{
+
+    border:none;
+
+}
+
+.agendaHour{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#64748B;
+
+    font-weight:600;
+
+    min-width:100px;
+
+}
+
+
+
+
+.agendaInfo{
+
+    flex:1;
+
+}
+
+.agendaInfo h4{
+
+    display:flex;
+
+    gap:8px;
+
+    color:#183B66;
+
+    margin-bottom:6px;
+
+}
+
+.agendaInfo p{
+
+    color:#64748B;
+
+}
+
+.agendaDoctor{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+    padding:8px 15px;
+
+    border-radius:25px;
+
+    display:flex;
+
+    gap:8px;
+
+    align-items:center;
+
+    font-size:14px;
+
+}
+
+@media(max-width:1100px){
+
+.dashboardGrid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+/*======================================
+NEXT APPOINTMENTS
+=======================================*/
+
+.nextAppointments{
+
+    background:#FFF;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+.nextItem{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #EDF2F7;
+
+}
+
+.nextItem:last-child{
+
+    border:none;
+
+}
+
+.nextItem strong{
+
+    color:#183B66;
+
+    display:block;
+
+    margin-bottom:6px;
+
+}
+
+.nextItem p{
+
+    color:#64748B;
+
+    font-size:14px;
+
+}
+
+.nextHour{
+
+    text-align:right;
+
+}
+
+.nextHour span{
+
+    display:block;
+
+    font-weight:700;
+
+    color:#22C55E;
+
+}
+
+.nextHour small{
+
+    color:#94A3B8;
+
+}
+
+/*==========================================
+CHART GRID
+==========================================*/
+
+
+
+
+
+.chartCard,
+
+.agendaPanel,
+
+.nextAppointments{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    box-shadow:
+
+        0 10px 35px rgba(15,23,42,.05);
+
+}
+
+
+.chartCard h3{
+
+    margin-bottom:20px;
+
+    color:#183B66;
+
+}
+
+@media(max-width:1100px){
+
+.chartGrid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+/*========================================================
+BOTTOM GRID
+========================================================*/
+
+
+
+.patientItem{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #EDF2F7;
+
+}
+
+.patientItem:last-child{
+
+    border:none;
+
+}
+
+.patientItem strong{
+
+    color:#183B66;
+
+}
+
+.patientItem p{
+
+    color:#64748B;
+
+    margin-top:5px;
+
+}
+
+.patientHour{
+
+    display:block;
+
+    color:#22C55E;
+
+    font-weight:700;
+
+}
+
+.patientItem small{
+
+    color:#94A3B8;
+
+}
+
+@media(max-width:1100px){
+
+.bottomGrid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+.panelHeader h2,
+
+.chartCard h3{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:#183B66;
+
+}
+.panelHeader button{
+
+    background:#22C55E;
+
+    border:none;
+
+    color:white;
+
+    border-radius:12px;
+
+    padding:12px 20px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.panelHeader button:hover{
+
+    background:#16A34A;
+
+}
+
+.sidebar{
+
+    width:270px;
+
+    background:#FFF;
+
+    display:flex;
+
+    flex-direction:column;
+
+    border-right:1px solid var(--border);
+
+}
+
+
+
+.sidebarLogo{
+
+padding:28px 24px 18px;
+
+}
+
+.logoCircle{
+
+    width:82px;
+
+    height:82px;
+
+    border-radius:20px;
+
+    font-size:40px;
+
+}
+
+.sidebarLogo h2{
+
+    font-size:20px;
+
+}
+
+.sidebarLogo span{
+
+    color:#64748B;
+
+    font-size:13px;
+
+}
+
+.pageTitle{
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.pageSubtitle{
+
+    font-size:16px;
+
+}
+
+.userAvatar{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+}
+
+.agendaPanel{
+    grid-area:agenda;
+}
+
+.nextAppointments{
+    grid-area:upcoming;
+}
+
+.incomeChart{
+    grid-area:income;
+}
+
+.veterinarianChart{
+    grid-area:vets;
+}
+
+.speciesChart{
+    grid-area:species;
+}
+
+.recentPatients{
+    grid-area:recent;
+}
+
+.sidebarMenu{
+
+    margin-top:10px;
+
+    padding:0 14px;
+
+    flex:1;
+}
+
+.sidebarFooter{
+
+    padding:20px;
+
+    margin-top:auto;
+}
+
+.dashboardCardContent{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    height:100%;
+
+}
+
+.dashboardCardContent h2{
+
+    font-size:40px;
+
+    color:#183B66;
+
+    margin:0;
+
+    line-height:1;
+
+}
+
+.dashboardCardContent h4{
+
+    margin-top:8px;
+
+    font-size:16px;
+
+    color:#64748B;
+
+    font-weight:600;
+
+}
+
+.cardTrend{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    margin-top:14px;
+
+    color:#22C55E;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.trendArrow{
+
+    font-size:12px;
+
+}
+
+.agendaPet{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.agendaPet img{
+
+    width:52px;
+
+    height:52px;
+
+    min-width:52px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
+.agendaPet div{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+.agendaPet strong{
+
+    color:#183B66;
+
+    font-size:18px;
+
+    line-height:1.2;
+
+}
+
+.agendaPet small{
+
+    color:#94A3B8;
+
+    margin-top:4px;
+
+}
+
+.doctorBadge{
+
+    justify-self:end;
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+
+.agendaPanel{
+
+    grid-column:1 / span 5;
+
+}
+
+.nextAppointments{
+
+    grid-column:6 / span 3;
+
+}
+
+.incomeChart{
+
+    grid-column:9 / span 4;
+
+}
+
+.veterinarianChart{
+
+    grid-column:1 / span 3;
+
+}
+
+.speciesChart{
+
+    grid-column:4 / span 3;
+
+}
+
+.recentPatients{
+
+    grid-column:7 / span 6;
+
+}
+
+
+.agendaService{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#183B66;
+
+    white-space:nowrap;
+
+}
+
+.card{
+
+    background:#FFF;
+
+    border-radius:24px;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
+
+    transition:.25s;
+
+    overflow:hidden;
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 18px 40px rgba(15,23,42,.08);
+
+}
+
+.cardHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    padding:24px 28px 16px;
+
+}
+
+.cardHeader h3{
+
+    font-size:28px;
+
+    color:#183B66;
+
+}
+
+.cardHeader p{
+
+    margin-top:6px;
+
+    color:#64748B;
+
+}
+
+.cardBody{
+
+    padding:0 28px 28px;
+
+}
+
+.btnPrimary{
+
+    background:#22C55E;
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:12px 20px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btnPrimary:hover{
+
+    background:#16A34A;
+
+}
+
+.badge{
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.badge-success{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+.badge-info{
+
+    background:#DBEAFE;
+
+    color:#2563EB;
+
+}
+
+.badge-warning{
+
+    background:#FEF3C7;
+
+    color:#D97706;
+
+}
+

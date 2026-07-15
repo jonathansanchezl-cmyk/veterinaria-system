@@ -1,88 +1,20 @@
-import {
-  Routes,
-  Route
-}
-from "react-router-dom";
+import AppRouter from "./router/AppRouter";
 
-// PAGINAS
+import { AuthProvider }
 
-import Login
-from "./pages/Login";
+from "./context/AuthContext";
 
-import Dashboard
-from "./pages/Dashboard";
+function App(){
 
-import Citas
-from "./pages/Citas";
+    return(
 
-import Clientes
-from "./pages/Clientes";
+        <AuthProvider>
 
-import Doctores
-from "./pages/Doctores";
+            <AppRouter/>
 
+        </AuthProvider>
 
-import Operadores
-from "./pages/Operadores";
-
-import Mascotas
-from "./pages/Mascotas";
-
-import HistorialClinico
-from "./pages/HistorialClinico";
-
-// APP
-
-function App() {
-
-  return (
-
-    <Routes>
-
-      <Route
-        path="/"
-        element={<Login />}
-      />
-
-      <Route
-        path="/dashboard"
-        element={<Dashboard />}
-      />
-
-      <Route
-        path="/citas"
-        element={<Citas />}
-      />
-
-      <Route
-        path="/clientes"
-        element={<Clientes />}
-      />
-
-      <Route
-        path="/doctores"
-        element={<Doctores />}
-      />
-
-
-      <Route
-        path="/operadores"
-        element={<Operadores />}
-      />
-
-      <Route
-        path="/mascotas"
-        element={<Mascotas />}
-      />
-
-      <Route
-        path="/historial"
-        element={<HistorialClinico />}
-      />
-
-    </Routes>
-
-  );
+    );
 
 }
 

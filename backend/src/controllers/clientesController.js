@@ -13,8 +13,7 @@ const obtenerClientes =
       const clientes =
         await Cliente.findAll({
 
-          order:
-            [["id", "DESC"]]
+          order: [["nombre", "ASC"]]
 
         });
 

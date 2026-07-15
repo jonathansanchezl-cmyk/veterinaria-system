@@ -1,81 +1,60 @@
-const { DataTypes } =
-require("sequelize");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-const sequelize =
-require("../config/database");
+const Doctor = sequelize.define(
+    "doctores",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
 
-const Doctor =
-sequelize.define(
+        nombres: {
+            type: DataTypes.STRING(150),
+            allowNull: false
+        },
 
-  "doctores",
+        especialidad: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
 
-  {
+        telefono: {
+            type: DataTypes.STRING(20),
+            allowNull: true
+        },
 
-    id: {
+        correo: {
+            type: DataTypes.STRING(150),
+            allowNull: true,
+            validate: {
+                isEmail: true
+            }
+        },
 
-      type:
-        DataTypes.INTEGER,
+        horario: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
 
-      primaryKey: true,
-
-      autoIncrement: true
-
-    },
-
-    nombres: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    especialidad: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    telefono: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    correo: {
-
-      type:
-        DataTypes.STRING
-
-    },
-
-    horario: {
-
-      type:
-        DataTypes.STRING
+        estado: {
+            type: DataTypes.ENUM(
+                "ACTIVO",
+                "INACTIVO",
+                "VACACIONES"
+            ),
+            allowNull: false,
+            defaultValue: "ACTIVO"
+        }
 
     },
-
-    estado: {
-
-      type:
-        DataTypes.STRING
-
+    {
+        tableName: "doctores",
+        timestamps: false,
+        freezeTableName: true
     }
-
-  },
-
-  {
-
-    tableName:
-      "doctores",
-
-    timestamps: false
-
-  }
-
 );
 
-module.exports =
-Doctor;
+module.exports = Doctor;
+

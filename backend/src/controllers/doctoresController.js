@@ -13,9 +13,7 @@ async (req, res) => {
     const doctores =
       await Doctor.findAll({
 
-        order: [
-          ["id", "DESC"]
-        ]
+        order: [["nombres", "ASC"]]
 
       });
 

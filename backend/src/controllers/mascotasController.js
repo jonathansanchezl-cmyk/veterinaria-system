@@ -1,122 +1,141 @@
-const Mascota =
-require("../models/Mascota");
+const Mascota = require("../models/Mascota");
 
-// ======================================
-// OBTENER
-// ======================================
+// ======================================================
+// OBTENER MASCOTAS
+// ======================================================
 
-const obtenerMascotas =
-async (req, res) => {
+const obtenerMascotas = async (req, res) => {
 
-  try {
+    try {
 
-    const mascotas =
-      await Mascota.findAll({
+        const { cliente } = req.query;
 
-        order: [
-          ["id", "DESC"]
-        ]
+        const where = {};
 
-      });
+        // Filtrar por cliente si viene el parámetro
+        if (cliente) {
 
-    res.json(
-      mascotas
-    );
+            where.id_cliente = cliente;
 
-  } catch (error) {
+        }
 
-    console.log(error);
+        const mascotas = await Mascota.findAll({
 
-    res.status(500).json({
+            where,
 
-      error:
-        "Error obteniendo mascotas"
+            order: [
 
-    });
+                ["nombre", "ASC"]
 
-  }
+            ]
 
-};
+        });
 
-// ======================================
-// CREAR
-// ======================================
+        res.json(mascotas);
 
-const crearMascota =
-async (req, res) => {
+    }
 
-  try {
+    catch (error) {
 
-    const mascota =
-      await Mascota.create(
-        req.body
-      );
+        console.error(error);
 
-    res.json(
-      mascota
-    );
+        res.status(500).json({
 
-  } catch (error) {
+            error: "Error obteniendo mascotas"
 
-    console.log(error);
+        });
 
-    res.status(500).json({
-
-      error:
-        "Error creando mascota"
-
-    });
-
-  }
+    }
 
 };
 
-// ======================================
-// ELIMINAR
-// ======================================
 
-const eliminarMascota =
-async (req, res) => {
+// ======================================================
+// CREAR MASCOTA
+// ======================================================
 
-  try {
+const crearMascota = async (req, res) => {
 
-    await Mascota.destroy({
+    try {
 
-      where: {
+        const mascota = await Mascota.create(req.body);
 
-        id:
-          req.params.id
+        res.status(201).json(mascota);
 
-      }
+    }
 
-    });
+    catch (error) {
 
-    res.json({
+        console.error(error);
 
-      mensaje:
-        "Mascota eliminada"
+        res.status(500).json({
 
-    });
+            error: "Error creando mascota"
 
-  } catch (error) {
+        });
 
-    console.log(error);
-
-    res.status(500).json({
-
-      error:
-        "Error eliminando mascota"
-
-    });
-
-  }
+    }
 
 };
+
+
+// ======================================================
+// ELIMINAR MASCOTA
+// ======================================================
+
+const eliminarMascota = async (req, res) => {
+
+    try {
+
+        const eliminadas = await Mascota.destroy({
+
+            where: {
+
+                id: req.params.id
+
+            }
+
+        });
+
+        if (!eliminadas) {
+
+            return res.status(404).json({
+
+                error: "Mascota no encontrada"
+
+            });
+
+        }
+
+        res.json({
+
+            mensaje: "Mascota eliminada correctamente"
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error eliminando mascota"
+
+        });
+
+    }
+
+};
+
 
 module.exports = {
 
-  obtenerMascotas,
-  crearMascota,
-  eliminarMascota
+    obtenerMascotas,
+
+    crearMascota,
+
+    eliminarMascota
 
 };

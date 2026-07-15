@@ -1,0 +1,154 @@
+/*==================================================
+COLORES
+==================================================*/
+
+:root{
+
+    --primary:#22C55E;
+    --primary-dark:#16A34A;
+
+    --secondary:#3B82F6;
+
+    --purple:#7C3AED;
+
+    --orange:#F59E0B;
+
+    --red:#EF4444;
+
+    --yellow:#FACC15;
+
+    --white:#FFFFFF;
+
+    --background:#F5F7FB;
+
+    --surface:#FFFFFF;
+
+    --border:#E5E7EB;
+
+    --text:#1E293B;
+
+    --text-light:#64748B;
+
+    --success:#16A34A;
+
+    --warning:#F59E0B;
+
+    --danger:#EF4444;
+
+    --info:#2563EB;
+
+}
+/*==================================================
+SOMBRAS
+==================================================*/
+
+:root{
+
+    --shadow-sm:
+
+        0 2px 6px rgba(0,0,0,.05);
+
+    --shadow:
+
+        0 8px 25px rgba(15,23,42,.08);
+
+    --shadow-lg:
+
+        0 18px 40px rgba(15,23,42,.12);
+
+}
+:root{
+
+    --radius-sm:8px;
+
+    --radius:18px;
+
+    --radius-lg:24px;
+
+}
+:root{
+
+    --space-1:4px;
+
+    --space-2:8px;
+
+    --space-3:12px;
+
+    --space-4:16px;
+
+    --space-5:20px;
+
+    --space-6:24px;
+
+    --space-7:30px;
+
+    --space-8:40px;
+
+}
+
+:root{
+
+    --font-family:
+
+        "Segoe UI",
+
+        sans-serif;
+
+    --title-xl:34px;
+
+    --title-lg:28px;
+
+    --title-md:22px;
+
+    --title-sm:18px;
+
+    --text-lg:16px;
+
+    --text-md:14px;
+
+    --text-sm:13px;
+
+}
+
+:root{
+
+    --primary:#22C55E;
+
+    --primary-dark:#16A34A;
+
+    --primary-light:#DCFCE7;
+
+    --secondary:#183B66;
+
+    --background:#F4F7FB;
+
+    --panel:#FFFFFF;
+
+    --border:#E8EEF5;
+
+    --text:#183B66;
+
+    --text-light:#64748B;
+
+    --shadow:
+
+        0 12px 30px rgba(15,23,42,.06);
+
+    --radius:22px;
+
+}
+
+:root{
+
+    --success:#22C55E;
+
+    --warning:#F59E0B;
+
+    --danger:#EF4444;
+
+    --info:#3B82F6;
+
+    --purple:#7C3AED;
+
+}
+

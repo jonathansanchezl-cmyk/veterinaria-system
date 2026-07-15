@@ -1,158 +1,184 @@
-import "../styles/login.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { FaPaw, FaUser, FaLock } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
+
+
 
 
 function Login() {
 
-  const navigate =
-    useNavigate();
+    const navigate = useNavigate();
 
-  const [email, setEmail] =
-    useState("");
+    const { login } = useAuth();
 
-  const [password, setPassword] =
-    useState("");
+    const [usuario, setUsuario] = useState("");
 
-  const [error, setError] =
-    useState("");
+    const [password, setPassword] = useState("");
 
-  // ======================================
-  // LOGIN
-  // ======================================
+    
+    const iniciarSesion = async (e) => {
 
-  const handleLogin =
-    async (e) => {
+    e.preventDefault();
 
-      e.preventDefault();
+    const ok = await login(usuario, password);
 
-      setError("");
+    if (ok) {
 
-      try {
+        /*navigate("/dashboard");*/
 
-        const response =
-          await axios.post(
+        await Swal.fire({
 
-            "http://localhost:4000/api/auth/login",
+    icon: "success",
 
-            {
+    title: "¡Bienvenido!",
 
-              email: email,
+    text: `Hola ${usuario}, iniciando sesión...`,
 
-              password: password
+    timer: 2500,
 
-            }
+    showConfirmButton: false,
 
-          );
+    background: "#ffffff",
 
-        console.log(
-          response.data
-        );
+    color: "#1E3A5F"
 
-        // LOGIN CORRECTO
+});
 
-        if (
-          response.data.success === true
-        ) {
+navigate("/dashboard");
 
-          localStorage.setItem(
+    } else {
 
-            "usuario",
+        Swal.fire({
 
-            JSON.stringify(
-              response.data.usuario
-            )
+    icon: "error",
 
-          );
+    title: "Acceso denegado",
 
-          navigate(
-            "/dashboard"
-          );
+    text: "El correo electrónico o la contraseña son incorrectos. Verifique sus credenciales e inténtelo nuevamente.",
 
-        } else {
+    confirmButtonText: "Entendido",
 
-          setError(
-            response.data.message
-          );
+    confirmButtonColor: "#22C55E",
 
-        }
+    background: "#ffffff",
 
-      } catch (err) {
+    color: "#1E3A5F",
 
-        console.log(err);
+    allowOutsideClick: false
 
-        setError(
-          "Error de conexión con el servidor"
-        );
+});
 
-      }
+    }
 
-    };
+};
 
-  return (
 
-    <div className="login-container">
 
-      <div className="login-box">
+    return (
 
-        <h1>
-          Bienvenido
-        </h1>
+        <div className="loginPage">
 
-        <p>
-          Sistema Inteligente Veterinario
-        </p>
+            {/* PANEL IZQUIERDO */}
 
-        {
-          error && (
+            <div className="loginLeft">
 
-            <div className="error-message">
-              {error}
+                <div className="loginOverlay">
+
+                    <div className="brand">
+
+                        <div className="brandIcon">
+
+                            <FaPaw />
+
+                        </div>
+
+                        <h1>ANIMALIA</h1>
+
+                        <p>
+
+                            Sistema Integral de Gestión Veterinaria
+
+                        </p>
+
+                    </div>
+
+                </div>
+
             </div>
 
-          )
-        }
+            {/* PANEL DERECHO */}
 
-        <form
-          onSubmit={
-            handleLogin
-          }
-        >
+            <div className="loginRight">
 
-          <input
-            type="email"
-            placeholder="Correo"
-            value={email}
-            onChange={(e) =>
-              setEmail(
-                e.target.value
-              )
-            }
-          />
+                <div className="loginCard">
 
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) =>
-              setPassword(
-                e.target.value
-              )
-            }
-          />
+                    <h2>
 
-          <button type="submit">
-            Ingresar
-          </button>
+                        Bienvenido
 
-        </form>
+                    </h2>
 
-      </div>
+                    <p>
 
-    </div>
+                        Inicie sesión para continuar
 
-  );
+                    </p>
+
+                    <form onSubmit={iniciarSesion}>
+
+                        <div className="inputGroup">
+
+                            <FaUser />
+
+                            <input
+
+                                type="text"
+
+                                placeholder="Usuario"
+
+                                value={usuario}
+
+                                onChange={(e)=>setUsuario(e.target.value)}
+
+                            />
+
+                        </div>
+
+                        <div className="inputGroup">
+
+                            <FaLock />
+
+                            <input
+
+                                type="password"
+
+                                placeholder="Contraseña"
+
+                                value={password}
+
+                                onChange={(e)=>setPassword(e.target.value)}
+
+                            />
+
+                        </div>
+
+                        <button>
+
+                            Iniciar Sesión
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    );
 
 }
 

@@ -1,81 +1,54 @@
-const { DataTypes }
-= require("sequelize");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-const sequelize =
-  require("../config/database");
-
-const Cliente =
-  sequelize.define(
-
-    "CLIENTES",
-
+const Cliente = sequelize.define(
+    "clientes",
     {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
 
-      id: {
+        nombre: {
+            type: DataTypes.STRING(100),
+            allowNull: false
+        },
 
-        type:
-          DataTypes.INTEGER,
+        dni: {
+            type: DataTypes.STRING(20),
+            allowNull: true
+        },
 
-        primaryKey: true,
+        telefono: {
+            type: DataTypes.STRING(20),
+            allowNull: true
+        },
 
-        autoIncrement: true
+        email: {
+            type: DataTypes.STRING(150),
+            allowNull: true,
+            validate: {
+                isEmail: true
+            }
+        },
 
-      },
+        direccion: {
+            type: DataTypes.STRING(255),
+            allowNull: true
+        },
 
-      nombre: {
-
-        type:
-          DataTypes.STRING
-
-      },
-
-      dni: {
-
-        type:
-          DataTypes.STRING
-
-      },
-
-      telefono: {
-
-        type:
-          DataTypes.STRING
-
-      },
-
-      email: {
-
-        type:
-          DataTypes.STRING
-
-      },
-
-      direccion: {
-
-        type:
-          DataTypes.STRING
-
-      },
-
-      created_at: {
-
-        type:
-          DataTypes.DATE
-
-      }
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: true
+        }
 
     },
-
     {
-
-      tableName:
-        "CLIENTES",
-
-      timestamps: false
-
+        tableName: "clientes",
+        timestamps: false,
+        freezeTableName: true
     }
+);
 
-  );
-
-module.exports =
-  Cliente;
+module.exports = Cliente;

@@ -1,53 +1,91 @@
 const { DataTypes } = require("sequelize");
-
-const sequelize =
-  require("../config/database");
+const sequelize = require("../config/database");
 
 const Cita = sequelize.define(
-  "citas",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
+    "citas",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
 
-    mascota: {
-      type: DataTypes.STRING,
-    },
+        // ==========================================
+        // NUEVAS LLAVES FORÁNEAS
+        // ==========================================
 
-    propietario: {
-      type: DataTypes.STRING,
-    },
+        id_cliente: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
 
-    doctor: {
-      type: DataTypes.STRING,
-    },
+        id_mascota: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
 
-    fecha: {
-      type: DataTypes.STRING,
-    },
+        id_doctor: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
 
-    hora: {
-      type: DataTypes.STRING,
-    },
+        // ==========================================
+        // CAMPOS ANTIGUOS
+        // Se mantienen temporalmente para no romper
+        // el frontend ni los controladores actuales
+        // ==========================================
 
-    motivo: {
-      type: DataTypes.STRING,
-    },
+        mascota: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
 
-    estado: {
-      type: DataTypes.STRING,
-    },
+        propietario: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
 
-    costo: {
-      type: DataTypes.FLOAT,
+        doctor: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+
+        // ==========================================
+        // DATOS DE LA CITA
+        // ==========================================
+
+        fecha: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
+
+        hora: {
+            type: DataTypes.TIME,
+            allowNull: false
+        },
+
+        motivo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        estado: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        costo: {
+            type: DataTypes.DECIMAL(10, 2),
+            allowNull: false,
+            defaultValue: 0
+        }
+
     },
-  },
-  {
-    timestamps: false,
-    freezeTableName: true,
-  }
+    {
+        tableName: "citas",
+        timestamps: false,
+        freezeTableName: true
+    }
 );
 
 module.exports = Cita;
