@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-
 import {
     FaTachometerAlt,
     FaCalendarAlt,
@@ -7,66 +6,86 @@ import {
     FaUsers,
     FaUserMd,
     FaChartBar,
-    FaCog,
     FaSignOutAlt
 } from "react-icons/fa";
 
 function Sidebar() {
 
+    const usuario = JSON.parse(
+        localStorage.getItem("usuario") || "{}"
+    );
+
+    const rol = (usuario.rol || "")
+        .toUpperCase()
+        .trim();
+
     const menu = [
 
         {
-            name: "Dashboard",
-            path: "/dashboard",
-            icon: <FaTachometerAlt />
+            nombre: "Dashboard",
+            ruta: "/dashboard",
+            icono: <FaTachometerAlt />,
+            roles: ["ADMINISTRADOR", "VETERINARIO", "OPERADOR"]
         },
 
         {
-            name: "Citas",
-            path: "/citas",
-            icon: <FaCalendarAlt />
+            nombre: "Citas",
+            ruta: "/citas",
+            icono: <FaCalendarAlt />,
+            roles: ["ADMINISTRADOR", "VETERINARIO", "OPERADOR"]
         },
 
         {
-            name: "Mascotas",
-            path: "/mascotas",
-            icon: <FaPaw />
+            nombre: "Mascotas",
+            ruta: "/mascotas",
+            icono: <FaPaw />,
+            roles: ["ADMINISTRADOR", "VETERINARIO", "OPERADOR"]
         },
 
         {
-            name: "Clientes",
-            path: "/clientes",
-            icon: <FaUsers />
+            nombre: "Clientes",
+            ruta: "/clientes",
+            icono: <FaUsers />,
+            roles: ["ADMINISTRADOR", "OPERADOR"]
+        },
+
+
+        {
+            nombre: "Veterinarios",
+            ruta: "/veterinarios",
+            icono: <FaUserMd />,
+            roles: ["ADMINISTRADOR"]
         },
 
         {
-            name: "Veterinarios",
-            path: "/veterinarios",
-            icon: <FaUserMd />
+            nombre: "Usuarios",
+            ruta: "/usuarios",
+            icono: <FaUsers />,
+            roles: ["ADMINISTRADOR"]
         },
 
         {
-            name: "Reportes",
-            path: "/reportes",
-            icon: <FaChartBar />
+            nombre: "Reportes",
+            ruta: "/reportes",
+            icono: <FaChartBar />,
+            roles: ["ADMINISTRADOR"]
         },
 
-        {
-            name: "Configuración",
-            path: "/configuracion",
-            icon: <FaCog />
-        }
 
     ];
 
-    const cerrarSesion = () => {
+    const menuVisible = menu.filter(item =>
+        item.roles.includes(rol)
+    );
+
+    function cerrarSesion() {
 
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
 
         window.location.href = "/";
 
-    };
+    }
 
     return (
 
@@ -74,20 +93,22 @@ function Sidebar() {
 
             <div className="sidebarLogo">
 
-                    <div className="logoImage">
+                <div className="logoImage">
 
-                        <img
+                    <img
                         src="/images/logo.png"
                         alt="Animalia"
-                        />
+                    />
 
-                    </div>
+                </div>
 
                 <div>
 
                     <h2>ANIMALIA</h2>
 
-                    <span>Clínica Veterinaria</span>
+                    <span>
+                        Clínica Veterinaria
+                    </span>
 
                 </div>
 
@@ -97,11 +118,11 @@ function Sidebar() {
 
                 {
 
-                    menu.map((item) => (
+                    menuVisible.map(item => (
 
                         <NavLink
-                            key={item.path}
-                            to={item.path}
+                            key={item.ruta}
+                            to={item.ruta}
                             className={({ isActive }) =>
                                 isActive
                                     ? "menuItem active"
@@ -111,13 +132,13 @@ function Sidebar() {
 
                             <span className="menuIcon">
 
-                                {item.icon}
+                                {item.icono}
 
                             </span>
 
                             <span>
 
-                                {item.name}
+                                {item.nombre}
 
                             </span>
 

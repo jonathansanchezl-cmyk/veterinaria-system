@@ -12,7 +12,7 @@ import "./styles/forms.css";
 import "./styles/tables.css";
 import "./styles/charts.css";
 import "./styles/login.css";
-import "./styles/modal.css";
+import "./styles/reportes.css";
 
 
 ReactDOM.createRoot(

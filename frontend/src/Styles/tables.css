@@ -98,6 +98,21 @@
 
 }
 
+.actionButton.attend{
+
+    background:#2563EB;
+    color:white;
+
+}
+
+.actionButton.attend:hover{
+
+    background:#1D4ED8;
+
+}
+
+
+
 .actionButton{
 
     width:36px;

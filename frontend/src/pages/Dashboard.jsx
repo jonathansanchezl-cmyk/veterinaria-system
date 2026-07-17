@@ -1,43 +1,113 @@
 import MainLayout from "../components/layout/MainLayout";
 import DashboardCards from "../components/dashboard/DashboardCards";
 import AgendaHoy from "../components/dashboard/AgendaHoy";
-import UpcomingAppointments from "../components/dashboard/UpcomingAppointments";
-import VeterinarianChart from "../components/dashboard/VeterinarianChart";
+import useDashboard from "../hooks/useDashboard";
+import Loader from "../components/common/Loader";
+import RecentPatients from "../components/dashboard/RecentPatients";
 import SpeciesChart from "../components/dashboard/SpeciesChart";
 import IncomeChart from "../components/dashboard/IncomeChart";
-import RecentPatients from "../components/dashboard/RecentPatients";
+
+
 
 
 function Dashboard() {
 
+    const {
+
+        dashboard,
+
+        loading
+
+    } = useDashboard();
+
+    if (loading) {
+
+        return (
+
+            <MainLayout>
+
+                <Loader />
+
+            </MainLayout>
+
+        );
+
+    }
+
     return (
 
-    <MainLayout>
+        <MainLayout>
 
-    <div className="dashboardContainer">
+            <div className="pageHeader">
 
-        <DashboardCards/>
+                <div>
 
-        <section className="dashboardPremium">
+                    <h1>
 
-            <AgendaHoy/>
+                        Dashboard
 
-            <UpcomingAppointments/>
+                    </h1>
 
-            <IncomeChart/>
+                    <p>
 
-            <VeterinarianChart/>
+                        Resumen general de la clínica veterinaria.
 
-            <SpeciesChart/>
+                    </p>
 
-            <RecentPatients/>
+                </div>
 
-        </section>
+            </div>
+
+           <DashboardCards dashboard={dashboard} />
+
+<div className="dashboardGrid">
+
+    <div className="gridLarge">
+
+        <AgendaHoy
+
+            agenda={dashboard.agendaHoy}
+
+        />
 
     </div>
 
-</MainLayout>
+    <div className="gridSmall">
 
+        <IncomeChart
+
+            ingresos={dashboard.ingresos}
+
+        />
+
+    </div>
+
+    <div className="gridLarge">
+
+        <RecentPatients
+
+            mascotas={dashboard.ultimasMascotas}
+
+        />
+
+    </div>
+
+    <div className="gridSmall">
+
+        <SpeciesChart
+
+            data={dashboard.especies}
+
+        />
+
+    </div>
+
+    
+</div>
+
+
+
+        </MainLayout>
 
     );
 

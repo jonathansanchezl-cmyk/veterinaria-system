@@ -4,56 +4,109 @@ import {
     BarChart,
     Bar,
     XAxis,
+    YAxis,
+    CartesianGrid,
     Tooltip
 
 } from "recharts";
 
-const data = [
+function SpeciesChart({
 
-    { especie:"Perros", total:90 },
-    { especie:"Gatos", total:55 },
-    { especie:"Aves", total:22 },
-    { especie:"Conejos", total:15 },
-    { especie:"Otros", total:8 }
+    data = []
 
-];
+}) {
 
-function SpeciesChart(){
+    const chartData = data.map((item) => ({
 
-    return(
+        especie:
+            item.especie.charAt(0).toUpperCase() +
+            item.especie.slice(1),
+
+        total: Number(item.total)
+
+    }));
+
+    return (
 
         <section className="chartCard speciesChart">
 
             <h3>
 
-                🐾 Mascotas Registradas
+                🐾 Mascotas por Especie
 
             </h3>
 
-            <ResponsiveContainer
-                width="100%"
-                height={260}
-            >
+            {
 
-                <BarChart data={data}>
+                chartData.length === 0 ? (
 
-                    <XAxis dataKey="especie"/>
+                    <div className="emptyState">
 
-                    <Tooltip/>
+                        No existen datos para mostrar.
 
-                    <Bar
+                    </div>
 
-                        dataKey="total"
+                ) : (
 
-                        fill="#22C55E"
+                    <ResponsiveContainer
 
-                        radius={[8,8,0,0]}
+                        width="100%"
 
-                    />
+                        height={280}
 
-                </BarChart>
+                    >
 
-            </ResponsiveContainer>
+                        <BarChart
+
+                            data={chartData}
+
+                            margin={{
+
+                                top:20,
+
+                                right:20,
+
+                                left:0,
+
+                                bottom:5
+
+                            }}
+
+                        >
+
+                            <CartesianGrid
+
+                                strokeDasharray="3 3"
+
+                            />
+
+                            <XAxis
+
+                                dataKey="especie"
+
+                            />
+
+                            <YAxis />
+
+                            <Tooltip />
+
+                            <Bar
+
+                                dataKey="total"
+
+                                fill="#22C55E"
+
+                                radius={[8,8,0,0]}
+
+                            />
+
+                        </BarChart>
+
+                    </ResponsiveContainer>
+
+                )
+
+            }
 
         </section>
 

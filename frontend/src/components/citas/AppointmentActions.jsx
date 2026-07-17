@@ -1,19 +1,14 @@
 import {
-
     FaEdit,
-
-    FaTrash
-
+    FaTrash,
+    FaStethoscope
 } from "react-icons/fa";
 
 function AppointmentActions({
-
     cita,
-
     onEdit,
-
-    onDelete
-
+    onDelete,
+    onAttend
 }) {
 
     return (
@@ -21,31 +16,20 @@ function AppointmentActions({
         <div className="appointmentActions">
 
             <button
-
                 className="actionButton edit"
-
                 onClick={() => onEdit(cita)}
-
                 title="Editar"
-
             >
-
-                <FaEdit/>
-
+                <FaEdit />
             </button>
 
+
             <button
-
                 className="actionButton delete"
-
                 onClick={() => onDelete(cita.id)}
-
                 title="Eliminar"
-
             >
-
-                <FaTrash/>
-
+                <FaTrash />
             </button>
 
         </div>

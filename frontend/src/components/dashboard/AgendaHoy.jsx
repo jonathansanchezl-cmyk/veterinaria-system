@@ -1,54 +1,23 @@
-import { Clock, CalendarDays, PawPrint } from "lucide-react";
+import {
+    CalendarDays,
+    Clock,
+    PawPrint
+} from "lucide-react";
 
-const agenda = [
-    {
-        id: 1,
-        hora: "08:00",
-        mascota: "Rocky",
-        raza: "Golden Retriever",
-        servicio: "Vacunación",
-        veterinario: "Dr. Pérez",
-        foto: "/images/pets/rocky.jpg"
-    },
-    {
-        id: 2,
-        hora: "09:00",
-        mascota: "Luna",
-        raza: "Persa",
-        servicio: "Consulta General",
-        veterinario: "Dra. Ramos",
-        foto: "/images/pets/luna.jpg"
-    },
-    {
-        id: 3,
-        hora: "10:30",
-        mascota: "Simba",
-        raza: "Labrador",
-        servicio: "Control",
-        veterinario: "Dr. Pérez",
-        foto: "/images/pets/simba.jpg"
-    },
-    {
-        id: 4,
-        hora: "11:30",
-        mascota: "Max",
-        raza: "Bulldog",
-        servicio: "Cirugía",
-        veterinario: "Dr. Castillo",
-        foto: "/images/pets/max.jpg"
-    },
-    {
-        id: 5,
-        hora: "12:30",
-        mascota: "Lola",
-        raza: "Beagle",
-        servicio: "Desparasitación",
-        veterinario: "Dra. Ramos",
-        foto: "/images/pets/lola.jpg"
-    }
-];
+import { useNavigate } from "react-router-dom";
 
-function AgendaHoy() {
+function AgendaHoy({ agenda = [] }) {
+
+    const navigate = useNavigate();
+
+    const proximaCita =
+
+        agenda.find(
+            cita =>
+                cita.estado?.toUpperCase() === "CONFIRMADA"
+        ) ||
+
+        agenda[0];
 
     return (
 
@@ -60,73 +29,99 @@ function AgendaHoy() {
 
                     <h2>
 
-                        <CalendarDays size={24} />
+                        <CalendarDays size={26} />
 
-                        Agenda de Hoy
+                        Próxima Cita
 
                     </h2>
 
                     <p className="panelSubtitle">
 
-                        {agenda.length} citas programadas
+                        {
+
+                            proximaCita
+
+                                ? "Cita programada"
+
+                                : "No existen citas programadas"
+
+                        }
 
                     </p>
 
                 </div>
 
-                <button className="btnPrimary">
+                <button
 
-                    Ver agenda completa
+                    className="btnPrimary"
+
+                    onClick={() => navigate("/citas")}
+
+                >
+
+                    Ir a Citas →
 
                 </button>
 
             </div>
 
-            <div className="agendaList">
+            {
 
-                {
+                !proximaCita ? (
 
-                    agenda.map((cita) => (
+                    <div className="emptyState">
 
-                        <div
-                            key={cita.id}
-                            className="agendaItem"
-                        >
+                        No existen citas confirmadas para hoy.
 
-                            {/* Hora */}
+                    </div>
 
-                            <div className="agendaHour">
+                ) : (
 
-                                <Clock size={18} />
+                    <div className="agendaList">
 
-                                <span>
+                        <div className="agendaItem">
 
-                                    {cita.hora}
+                        <div className="agendaHour">
 
-                                </span>
+    <div className="agendaDate">
 
-                            </div>
+        <CalendarDays size={18} />
 
-                            {/* Mascota */}
+        <span>
+
+            {proximaCita.fecha}
+
+        </span>
+
+    </div>
+
+    <div className="agendaTime">
+
+        <Clock size={18} />
+
+        <span>
+
+            {proximaCita.hora}
+
+        </span>
+
+    </div>
+
+</div>
 
                             <div className="agendaPet">
-
-                                <img
-                                    src={cita.foto}
-                                    alt={cita.mascota}
-                                />
 
                                 <div>
 
                                     <strong>
 
-                                        {cita.mascota}
+                                        {proximaCita.mascota}
 
                                     </strong>
 
                                     <small>
 
-                                        {cita.raza}
+                                        {proximaCita.propietario}
 
                                     </small>
 
@@ -134,35 +129,31 @@ function AgendaHoy() {
 
                             </div>
 
-                            {/* Servicio */}
-
                             <div className="agendaService">
 
                                 <PawPrint size={18} />
 
                                 <span>
 
-                                    {cita.servicio}
+                                    {proximaCita.motivo}
 
                                 </span>
 
                             </div>
 
-                            {/* Veterinario */}
-
                             <div className="doctorBadge">
 
-                                {cita.veterinario}
+                                Dr. {proximaCita.doctor}
 
                             </div>
 
                         </div>
 
-                    ))
+                    </div>
 
-                }
+                )
 
-            </div>
+            }
 
         </section>
 

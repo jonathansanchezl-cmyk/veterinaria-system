@@ -180,7 +180,7 @@ function AppointmentModal({
 
             motivo: cita.motivo || "",
 
-            estado: cita.estado || "Pendiente",
+            estado: cita.estado || "PENDIENTE",
 
             costo: cita.costo ?? ""
 
@@ -448,25 +448,28 @@ function AppointmentModal({
 
             }
 
-            Swal.fire({
+        await Swal.fire({
 
                 icon: "success",
 
                 title: cita
 
-                    ? "Cita actualizada"
+                    ? "Cita actualizada correctamente"
 
-                    : "Cita registrada",
+                    : "Cita registrada correctamente",
 
-                timer: 1500,
+                timer: 1200,
 
                 showConfirmButton: false
 
             });
 
+            // Recargar la tabla
+            await onSuccess();
+
             limpiarFormulario();
 
-            await onSuccess();
+            onClose();
 
         }
 
@@ -821,11 +824,18 @@ function AppointmentModal({
 
                         </option>
 
+                        <option value="En_Atencion">
+
+                            En_Atencion
+
+                        </option>
+
                         <option value="Cancelada">
 
                             Cancelada
 
                         </option>
+
 
                     </select>
 

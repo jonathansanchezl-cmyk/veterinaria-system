@@ -1,28 +1,81 @@
-import {useEffect,useState} from "react";
+import { useEffect, useState } from "react";
+import { obtenerDashboard } from "../services/dashboardService";
 
-import {obtenerDashboard}
+function useDashboard() {
 
-from "../services/dashboardService";
+    const [dashboard, setDashboard] = useState({
 
-export default function useDashboard(){
+        clientes: 0,
 
-    const[data,setData]=useState(null);
+        mascotas: 0,
 
-    const[loading,setLoading]=useState(true);
+        veterinarios: 0,
 
-    const cargar=async()=>{
+        usuarios: 0,
 
-        try{
+        citas: 0,
 
-            const response=
+        agendaHoy: [],
 
-            await obtenerDashboard();
+        ultimasMascotas: [],
 
-            setData(response.data);
+        especies: [],
+
+        citasPorVeterinario: [],
+
+        ingresos: []
+
+    });
+
+    const [loading, setLoading] = useState(true);
+
+    const [error, setError] = useState(null);
+
+    const cargarDashboard = async () => {
+
+        try {
+
+            setLoading(true);
+
+            setError(null);
+
+            const data = await obtenerDashboard();
+
+            setDashboard({
+
+                clientes: data.clientes ?? 0,
+
+                mascotas: data.mascotas ?? 0,
+
+                veterinarios: data.veterinarios ?? 0,
+
+                usuarios: data.usuarios ?? 0,
+
+                citas: data.citas ?? 0,
+
+                agendaHoy: data.agendaHoy ?? [],
+
+                ultimasMascotas: data.ultimasMascotas ?? [],
+
+                especies: data.especies ?? [],
+
+                citasPorVeterinario: data.citasPorVeterinario ?? [],
+
+                ingresos: data.ingresos ?? []
+
+            });
 
         }
 
-        finally{
+        catch (err) {
+
+            console.error("Error cargando dashboard:", err);
+
+            setError(err);
+
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -30,20 +83,24 @@ export default function useDashboard(){
 
     };
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        cargar();
+        cargarDashboard();
 
-    },[]);
+    }, []);
 
-    return{
+    return {
 
-        data,
+        dashboard,
 
         loading,
 
-        recargar:cargar
+        error,
+
+        recargarDashboard: cargarDashboard
 
     };
 
 }
+
+export default useDashboard;

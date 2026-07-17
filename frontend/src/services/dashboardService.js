@@ -1,7 +1,9 @@
-import api from "../api/api";
+import api from "./api";
 
-export const obtenerDashboard=()=>{
+export const obtenerDashboard = async () => {
 
-    return api.get("/dashboard");
+    const { data } = await api.get("/dashboard");
+
+    return data;
 
 };
