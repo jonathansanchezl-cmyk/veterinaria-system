@@ -1,45 +1,48 @@
 function DashboardCard({
 
-    icon,
-    title,
-    value,
-    trend,
+    titulo,
+
+    valor,
+
+    icono,
+
     color
 
 }) {
 
     return (
 
-        <div className="dashboardCard">
+        <div
 
-            <div
-                className="dashboardCardIcon"
-                style={{ background: color }}
-            >
-                {icon}
+            className="dashboardCard"
+
+            style={{
+
+                borderLeft:`6px solid ${color}`
+
+            }}
+
+        >
+
+            <div className="dashboardCardIcon">
+
+                {icono}
+
             </div>
 
-            <div className="dashboardCardContent">
+            <div>
 
-                <h2>{value}</h2>
+                <h5>
 
-                <h4>{title}</h4>
+                    {titulo}
 
-                <div className="cardTrend">
+                </h5>
 
-                    <span className="trendArrow">
+                <h2>
 
-                        ▲
+                    {valor}
 
-                    </span>
-
-                    <span>
-
-                        {trend}
-
-                    </span>
-
-                </div>
+                </h2>
 
             </div>
 

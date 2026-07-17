@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
-
 import MainLayout from "../components/layout/MainLayout";
 import AppointmentToolbar from "../components/citas/AppointmentToolbar";
 import AppointmentTable from "../components/citas/AppointmentTable";
 import AppointmentModal from "../components/citas/AppointmentModal";
 import Pagination from "../components/common/Pagination";
+import { useNavigate } from "react-router-dom";
 
 import { useCitas } from "../hooks/useCitas";
 
@@ -26,9 +26,9 @@ function Citas() {
     // MODAL
     // ===============================
 
-    const [modalOpen, setModalOpen] = useState(false);
+     const [modalOpen, setModalOpen] = useState(false);
 
-    const [selectedCita, setSelectedCita] = useState(null);
+     const [selectedCita, setSelectedCita] = useState(null);
 
     // ===============================
     // FILTROS
@@ -56,8 +56,8 @@ function Citas() {
 
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    // ===============================
-    // MODAL
+        // ===============================
+    // ACCIONES
     // ===============================
 
     const abrirNueva = () => {
@@ -84,7 +84,23 @@ function Citas() {
 
     };
 
-    // ===============================
+    const atender = (cita) => {
+
+        if (!cita) return;
+
+        if (cita.estado !== "CONFIRMADA") {
+
+            alert("Solo se pueden atender citas confirmadas.");
+
+            return;
+
+        }
+
+        navigate(`/historia/${cita.id}`);
+
+    };
+
+        // ===============================
     // FILTRAR
     // ===============================
 
@@ -142,7 +158,8 @@ function Citas() {
 
     ]);
 
-    // ===============================
+
+        // ===============================
     // ORDENAR
     // ===============================
 
@@ -222,8 +239,9 @@ function Citas() {
 
     ]);
 
-    // ===============================
-    // PAGINACION
+
+        // ===============================
+    // PAGINACIÓN
     // ===============================
 
     const indexUltimo = currentPage * itemsPerPage;
@@ -237,6 +255,8 @@ function Citas() {
         indexUltimo
 
     );
+
+
         // ===============================
     // RENDER
     // ===============================
@@ -249,16 +269,10 @@ function Citas() {
 
                 <div>
 
-                    <h1>
-
-                        Gestión de Citas
-
-                    </h1>
+                    <h1>Gestión de Citas</h1>
 
                     <p>
-
                         Administre todas las citas de la clínica veterinaria.
-
                     </p>
 
                     <small className="pageCounter">
@@ -335,33 +349,7 @@ function Citas() {
 
                 onDelete={borrarCita}
 
-                sortField={sortField}
-
-                sortDirection={sortDirection}
-
-                onSort={(campo) => {
-
-                    if (campo === sortField) {
-
-                        setSortDirection((direccion) =>
-
-                            direccion === "asc"
-
-                                ? "desc"
-
-                                : "asc"
-
-                        );
-
-                    } else {
-
-                        setSortField(campo);
-
-                        setSortDirection("asc");
-
-                    }
-
-                }}
+                onAttend={atender}
 
             />
 
@@ -387,20 +375,22 @@ function Citas() {
 
             <AppointmentModal
 
-                    isOpen={modalOpen}
+                isOpen={modalOpen}
 
-                    cita={selectedCita}
+                cita={selectedCita}
 
-                    onClose={cerrar}
+                onClose={cerrar}
 
-                    onSuccess={cargarCitas}
-
+                onSuccess={cargarCitas}
 
             />
 
         </MainLayout>
 
     );
-    }
+
+}
 
 export default Citas;
+
+

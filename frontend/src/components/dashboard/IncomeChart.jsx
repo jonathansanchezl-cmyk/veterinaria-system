@@ -1,60 +1,52 @@
-import {
-    ResponsiveContainer,
-    AreaChart,
-    Area,
-    XAxis,
-    Tooltip,
-    CartesianGrid
-} from "recharts";
+import { DollarSign } from "lucide-react";
 
-const data = [
+function IncomeChart({ ingresos = 0 }) {
 
-    { dia:"Lun", total:320 },
-    { dia:"Mar", total:420 },
-    { dia:"Mié", total:510 },
-    { dia:"Jue", total:480 },
-    { dia:"Vie", total:720 },
-    { dia:"Sáb", total:630 },
-    { dia:"Dom", total:810 }
+    const formatter = new Intl.NumberFormat("es-PE", {
 
-];
+        style: "currency",
 
-function IncomeChart(){
+        currency: "PEN",
 
-    return(
+        minimumFractionDigits: 2
 
-        <section className="chartCard incomeChart">
+    });
 
-            <h3>📈 Ingresos últimos 7 días</h3>
+    return (
 
-            <ResponsiveContainer
-                width="100%"
-                height={280}
-            >
+        <section className="chartCard incomeCard">
 
-                <AreaChart data={data}>
+            <div className="incomeHeader">
 
-                    <CartesianGrid strokeDasharray="3 3"/>
+                <div>
 
-                    <XAxis dataKey="dia"/>
+                    <h3>
 
-                    <Tooltip/>
+                       
 
-                    <Area
+                        Ingresos
 
-                        type="monotone"
+                    </h3>
 
-                        dataKey="total"
+                    <small>
 
-                        stroke="#22C55E"
+                        Total de citas atendidas
 
-                        fill="#DCFCE7"
+                    </small>
 
-                    />
+                </div>
 
-                </AreaChart>
+            </div>
 
-            </ResponsiveContainer>
+            <div className="incomeBody">
+
+                <h1>
+
+                    {formatter.format(ingresos)}
+
+                </h1>
+
+            </div>
 
         </section>
 

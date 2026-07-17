@@ -1,222 +1,189 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import {
+    FaTachometerAlt,
+    FaCalendarAlt,
+    FaPaw,
+    FaUsers,
+    FaUserMd,
+    FaChartBar,
+    FaCog,
+    FaSignOutAlt
+} from "react-icons/fa";
 
-    House,
+function Sidebar() {
 
-    CalendarDays,
+    const { usuario, logout } = useAuth();
 
-    Stethoscope,
+    console.log("Sidebar usuario:", usuario);
+    console.log("Sidebar rol:", usuario?.rol);
+    console.log("LocalStorage:", JSON.parse(localStorage.getItem("usuario")));
 
-    Users,
 
-    PawPrint,
+    const usuarioLS = JSON.parse(localStorage.getItem("usuario") || "null");
 
-    ClipboardList,
+    const rol = (usuarioLS?.rol || "").toUpperCase().trim();
 
-    UserCog,
+    alert("ROL = " + rol);
 
-    BarChart3,
 
-    Settings,
 
-    CircleHelp
 
-} from "lucide-react";
-
-function Sidebar(){
-
-    const menu=[
+    const menu = [
 
         {
-
-            title:"Inicio",
-
-            path:"/dashboard",
-
-            icon:<House size={21}/>
-
+            name: "Dashboard",
+            path: "/dashboard",
+            icon: <FaTachometerAlt />,
+            roles: ["ADMINISTRADOR","VETERINARIO","OPERADOR"]
         },
 
         {
-
-            title:"Citas",
-
-            path:"/citas",
-
-            icon:<CalendarDays size={21}/>
-
+            name: "Citas",
+            path: "/citas",
+            icon: <FaCalendarAlt />,
+            roles: ["ADMINISTRADOR","VETERINARIO","OPERADOR"]
         },
 
         {
-
-            title:"Doctores",
-
-            path:"/veterinarios",
-
-            icon:<Stethoscope size={21}/>
-
+            name: "Mascotas",
+            path: "/mascotas",
+            icon: <FaPaw />,
+            roles: ["ADMINISTRADOR","VETERINARIO","OPERADOR"]
         },
 
         {
+            name: "Clientes",
+            path: "/clientes",
+            icon: <FaUsers />,
+            roles: ["ADMINISTRADOR","OPERADOR"]
+        },
 
-            title:"Clientes",
-
-            path:"/clientes",
-
-            icon:<Users size={21}/>
-
+ 
+        {
+            name: "Veterinarios",
+            path: "/veterinarios",
+            icon: <FaUserMd />,
+            roles: ["ADMINISTRADOR"]
         },
 
         {
-
-            title:"Mascotas",
-
-            path:"/mascotas",
-
-            icon:<PawPrint size={21}/>
-
+            name: "Reportes",
+            path: "/reportes",
+            icon: <FaChartBar />,
+            roles: ["ADMINISTRADOR"]
         },
 
         {
-
-            title:"Historial Clínico",
-
-            path:"/historial",
-
-            icon:<ClipboardList size={21}/>
-
-        },
-
-        {
-
-            title:"Operadores",
-
-            path:"/operadores",
-
-            icon:<UserCog size={21}/>
-
-        },
-
-        {
-
-            title:"Reportes",
-
-            path:"/reportes",
-
-            icon:<BarChart3 size={21}/>
-
-        },
-
-        {
-
-            title:"Configuración",
-
-            path:"/configuracion",
-
-            icon:<Settings size={21}/>
-
+            name: "Configuración",
+            path: "/configuracion",
+            icon: <FaCog />,
+            roles: ["ADMINISTRADOR"]
         }
 
     ];
 
-    return(
+    const menuVisible = menu.filter(item =>
+        item.roles.includes(rol)
+    );
+
+    const cerrarSesion = () => {
+
+        logout();
+
+        window.location.href = "/";
+
+    };
+
+    return (
 
         <aside className="sidebar">
 
-            <div>
+            <div className="sidebarLogo">
 
-                <div className="sidebarLogo">
+                <div className="logoImage">
 
                     <img
-
-                        src="/images/logo-animalia.png"
-
+                        src="/images/logo.png"
                         alt="Animalia"
-
-                        className="logoImage"
-
                     />
-
-                    <div>
-
-                        <h2>
-
-                            ANIMALIA
-
-                        </h2>
-
-                        <span>
-
-                            Clínica Veterinaria
-
-                        </span>
-
-                    </div>
 
                 </div>
 
-                <nav className="sidebarMenu">
+                <div>
 
-                    {
+                    <h2>ANIMALIA</h2>
 
-                        menu.map(item=>(
+                    <span>Clínica Veterinaria</span>
 
-                            <NavLink
+                </div>
 
-                                key={item.path}
+            </div>
 
-                                to={item.path}
+            <nav className="sidebarMenu">
 
-                                className={({isActive})=>
+                {
 
-                                    isActive
+                    menuVisible.map(item => (
+
+                        <NavLink
+
+                            key={item.path}
+
+                            to={item.path}
+
+                            className={({isActive})=>
+
+                                isActive
 
                                     ? "menuItem active"
 
                                     : "menuItem"
 
-                                }
+                            }
 
-                            >
+                        >
 
-                                <span className="menuIcon">
+                            <span className="menuIcon">
 
-                                    {item.icon}
+                                {item.icon}
 
-                                </span>
+                            </span>
 
-                                {item.title}
+                            <span>
 
-                            </NavLink>
+                                {item.name}
 
-                        ))
+                            </span>
 
-                    }
+                        </NavLink>
 
-                </nav>
+                    ))
 
-            </div>
+                }
 
-            <div className="sidebarHelp">
+            </nav>
 
-                <CircleHelp size={22}/>
+            <div className="sidebarFooter">
 
-                <div>
+                <button
 
-                    <strong>
+                    className="logoutButton"
 
-                        Ayuda y soporte
+                    onClick={cerrarSesion}
 
-                    </strong>
+                >
 
-                    <small>
+                    <FaSignOutAlt/>
 
-                        Manual del sistema
+                    <span>
 
-                    </small>
+                        Cerrar sesión
 
-                </div>
+                    </span>
+
+                </button>
 
             </div>
 

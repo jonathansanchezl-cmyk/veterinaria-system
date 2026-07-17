@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
 
 import {
-
-    Bell,
-
     CalendarDays,
-
     Clock3,
-
     ChevronDown
-
 } from "lucide-react";
 
-function Header(){
+import { useAuth } from "../../context/AuthContext";
 
-    const [fecha,setFecha]=useState("");
+function Header() {
 
-    const [hora,setHora]=useState("");
+    const { usuario } = useAuth();
 
-    useEffect(()=>{
+    const [fecha, setFecha] = useState("");
 
-        const actualizar=()=>{
+    const [hora, setHora] = useState("");
 
-            const ahora=new Date();
+    useEffect(() => {
+
+        const actualizar = () => {
+
+            const ahora = new Date();
 
             setFecha(
 
@@ -32,13 +30,13 @@ function Header(){
 
                     {
 
-                        weekday:"long",
+                        weekday: "long",
 
-                        day:"numeric",
+                        day: "numeric",
 
-                        month:"long",
+                        month: "long",
 
-                        year:"numeric"
+                        year: "numeric"
 
                     }
 
@@ -54,9 +52,9 @@ function Header(){
 
                     {
 
-                        hour:"2-digit",
+                        hour: "2-digit",
 
-                        minute:"2-digit"
+                        minute: "2-digit"
 
                     }
 
@@ -68,13 +66,27 @@ function Header(){
 
         actualizar();
 
-        const t=setInterval(actualizar,1000);
+        const timer = setInterval(actualizar, 1000);
 
-        return()=>clearInterval(t);
+        return () => clearInterval(timer);
 
-    },[]);
+    }, []);
 
-    return(
+    const nombreUsuario =
+
+        usuario?.nombre ||
+
+        usuario?.usuario ||
+
+        "Usuario";
+
+    const rolUsuario =
+
+        usuario?.rol ||
+
+        "Operador";
+
+    return (
 
         <header className="header">
 
@@ -82,7 +94,7 @@ function Header(){
 
                 <h1 className="pageTitle">
 
-                    ¡Buenos días, Administrador! 👋
+                    ¡Buenos días, {nombreUsuario}! 👋
 
                 </h1>
 
@@ -96,21 +108,11 @@ function Header(){
 
             <div className="headerRight">
 
-                <button className="headerBell">
-
-                    <Bell size={20}/>
-
-                    <span className="bellBadge">
-
-                        3
-
-                    </span>
-
-                </button>
+                
 
                 <div className="headerInfo">
 
-                    <CalendarDays size={18}/>
+                    <CalendarDays size={18} />
 
                     {fecha}
 
@@ -118,34 +120,43 @@ function Header(){
 
                 <div className="headerInfo">
 
-                    <Clock3 size={18}/>
+                    <Clock3 size={18} />
 
                     {hora}
 
                 </div>
 
-             <div className="headerUser">
+                <div className="headerUser">
 
-                <img
-                    src="/images/avatar-admin.png"
-                    alt="Administrador"
-                />
+                    <img
 
-            <div>
+                        src="/images/avatar-admin.png"
 
-                <strong>
+                        alt={nombreUsuario}
 
-                    Administrador
+                    />
 
-                </strong>
+                    <div>
 
-              
+                        <strong>
 
-            </div>
+                            {nombreUsuario}
 
-    <ChevronDown size={18}/>
+                        </strong>
 
-</div>
+                        <br />
+
+                        <small>
+
+                            {rolUsuario}
+
+                        </small>
+
+                    </div>
+
+                    <ChevronDown size={18} />
+
+                </div>
 
             </div>
 

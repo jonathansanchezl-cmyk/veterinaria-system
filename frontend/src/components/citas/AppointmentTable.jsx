@@ -11,7 +11,9 @@ function AppointmentTable({
 
     onEdit,
 
-    onDelete
+    onDelete,
+
+    onAttend
 
 }) {
 
@@ -82,6 +84,8 @@ function AppointmentTable({
                                 onEdit={onEdit}
 
                                 onDelete={onDelete}
+
+                                onAttend={onAttend}
 
                             />
 
