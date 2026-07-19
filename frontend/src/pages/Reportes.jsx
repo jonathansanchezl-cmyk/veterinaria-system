@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { FileBarChart2 } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
-
 import ReportStats from "../components/reportes/ReportStats";
 import ReportFilters from "../components/reportes/ReportFilters";
 import ReportTable from "../components/reportes/ReportTable";
@@ -25,15 +24,15 @@ function Reportes() {
 
     const [loading, setLoading] = useState(false);
 
+    // ======================================
+    // CARGAR RESUMEN DEL DASHBOARD
+    // ======================================
+
     useEffect(() => {
 
         cargarResumen();
 
     }, []);
-
-    // ======================================
-    // CARGAR RESUMEN DEL DASHBOARD
-    // ======================================
 
     const cargarResumen = async () => {
 
@@ -50,11 +49,9 @@ function Reportes() {
 
             });
 
-        }
+        } catch (error) {
 
-        catch (error) {
-
-            console.error("Error cargando dashboard:", error);
+            console.error(error);
 
         }
 
@@ -72,19 +69,48 @@ function Reportes() {
 
             const respuesta = await obtenerReporte(filtros);
 
+            const total = respuesta.total || 0;
+
             setReportes(respuesta.registros || []);
 
-        }
+            setStats((prev) => {
 
-        catch (error) {
+                const nuevo = { ...prev };
+
+                switch ((filtros.tipo || "").toUpperCase()) {
+
+                    case "CLIENTES":
+                        nuevo.clientes = total;
+                        break;
+
+                    case "MASCOTAS":
+                        nuevo.mascotas = total;
+                        break;
+
+                    case "CITAS":
+                        nuevo.citas = total;
+                        break;
+
+                    case "VETERINARIOS":
+                        nuevo.veterinarios = total;
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+                return nuevo;
+
+            });
+
+        } catch (error) {
 
             console.error(error);
 
             setReportes([]);
 
-        }
-
-        finally {
+        } finally {
 
             setLoading(false);
 
@@ -93,12 +119,14 @@ function Reportes() {
     };
 
     // ======================================
-    // LIMPIAR FILTROS
+    // LIMPIAR
     // ======================================
 
     const limpiar = () => {
 
         setReportes([]);
+
+        cargarResumen();
 
     };
 
@@ -112,11 +140,9 @@ function Reportes() {
 
                     <h1>
 
-                        <FileBarChart2
-                            size={28}
-                        />
+                        <FileBarChart2 size={28} />
 
-                        Reportes
+                        {" "}Reportes
 
                     </h1>
 
@@ -149,9 +175,7 @@ function Reportes() {
                 <ReportTable
 
                     stats={stats}
-
                     reportes={reportes}
-
                     loading={loading}
 
                 />
