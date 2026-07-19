@@ -1,11 +1,9 @@
 import {
-    Eye,
     FileSpreadsheet,
     FileText
 } from "lucide-react";
 
 import {
-    vistaPrevia,
     exportarExcel,
     exportarPDF
 } from "../../services/reportesService";
@@ -13,8 +11,6 @@ import {
 function ReportTable({
 
     stats,
-
-    reportes = [],
 
     loading
 
@@ -56,31 +52,9 @@ function ReportTable({
 
     ];
 
-    const handlePreview = async (tipo) => {
-
-        try {
-
-            const respuesta = await vistaPrevia(tipo);
-
-            alert(
-
-                `Vista previa cargada.\nRegistros encontrados: ${respuesta.total}`
-
-            );
-
-            console.table(respuesta.registros);
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            alert("No fue posible obtener la información.");
-
-        }
-
-    };
+    // ======================================
+    // EXPORTAR EXCEL
+    // ======================================
 
     const handleExcel = async (tipo) => {
 
@@ -94,11 +68,15 @@ function ReportTable({
 
             console.error(error);
 
-            alert("Error exportando a Excel.");
+            alert("Error exportando el reporte a Excel.");
 
         }
 
     };
+
+    // ======================================
+    // EXPORTAR PDF
+    // ======================================
 
     const handlePDF = async (tipo) => {
 
@@ -112,7 +90,7 @@ function ReportTable({
 
             console.error(error);
 
-            alert("Error exportando a PDF.");
+            alert("Error exportando el reporte a PDF.");
 
         }
 
@@ -153,11 +131,8 @@ function ReportTable({
                     <tr>
 
                         <th>Reporte</th>
-
                         <th>Registros</th>
-
                         <th>Última actualización</th>
-
                         <th>Acciones</th>
 
                     </tr>
@@ -200,32 +175,12 @@ function ReportTable({
 
                                         <button
 
-                                            className="btnView"
-
-                                            title="Vista previa"
-
-                                            onClick={() =>
-
-                                                handlePreview(reporte.tipo)
-
-                                            }
-
-                                        >
-
-                                            <Eye size={18} />
-
-                                        </button>
-
-                                        <button
-
                                             className="btnExcel"
 
                                             title="Exportar Excel"
 
                                             onClick={() =>
-
                                                 handleExcel(reporte.tipo)
-
                                             }
 
                                         >
@@ -241,9 +196,7 @@ function ReportTable({
                                             title="Exportar PDF"
 
                                             onClick={() =>
-
                                                 handlePDF(reporte.tipo)
-
                                             }
 
                                         >
@@ -265,42 +218,6 @@ function ReportTable({
                 </tbody>
 
             </table>
-
-            {
-
-                reportes.length > 0 && (
-
-                    <div className="previewContainer">
-
-                        <h3>
-
-                            Vista previa
-
-                        </h3>
-
-                        <pre>
-
-                            {
-
-                                JSON.stringify(
-
-                                    reportes,
-
-                                    null,
-
-                                    2
-
-                                )
-
-                            }
-
-                        </pre>
-
-                    </div>
-
-                )
-
-            }
 
         </section>
 
