@@ -1,14 +1,14 @@
-const Cliente = require("../models/Cliente");
+const User = require("../models/User");
 
 // ======================================
 // OBTENER TODOS
 // ======================================
 
-const obtenerClientes = async (req, res) => {
+const obtenerUsuarios = async (req, res) => {
 
     try {
 
-        const clientes = await Cliente.findAll({
+        const usuarios = await User.findAll({
 
             order: [
 
@@ -18,7 +18,7 @@ const obtenerClientes = async (req, res) => {
 
         });
 
-        res.json(clientes);
+        res.json(usuarios);
 
     }
 
@@ -28,7 +28,7 @@ const obtenerClientes = async (req, res) => {
 
         res.status(500).json({
 
-            error: "Error obteniendo clientes"
+            error: "Error obteniendo usuarios"
 
         });
 
@@ -40,27 +40,27 @@ const obtenerClientes = async (req, res) => {
 // OBTENER UNO
 // ======================================
 
-const obtenerCliente = async (req, res) => {
+const obtenerUsuario = async (req, res) => {
 
     try {
 
-        const cliente = await Cliente.findByPk(
+        const usuario = await User.findByPk(
 
             req.params.id
 
         );
 
-        if (!cliente) {
+        if (!usuario) {
 
             return res.status(404).json({
 
-                error: "Cliente no encontrado"
+                error: "Usuario no encontrado"
 
             });
 
         }
 
-        res.json(cliente);
+        res.json(usuario);
 
     }
 
@@ -70,7 +70,7 @@ const obtenerCliente = async (req, res) => {
 
         res.status(500).json({
 
-            error: "Error obteniendo cliente"
+            error: "Error obteniendo usuario"
 
         });
 
@@ -82,17 +82,13 @@ const obtenerCliente = async (req, res) => {
 // CREAR
 // ======================================
 
-const crearCliente = async (req, res) => {
+const crearUsuario = async (req, res) => {
 
     try {
 
-        const cliente = await Cliente.create(
+        const usuario = await User.create(req.body);
 
-            req.body
-
-        );
-
-        res.status(201).json(cliente);
+        res.status(201).json(usuario);
 
     }
 
@@ -102,7 +98,7 @@ const crearCliente = async (req, res) => {
 
         res.status(500).json({
 
-            error: "Error creando cliente"
+            error: "Error creando usuario"
 
         });
 
@@ -114,29 +110,29 @@ const crearCliente = async (req, res) => {
 // ACTUALIZAR
 // ======================================
 
-const actualizarCliente = async (req, res) => {
+const actualizarUsuario = async (req, res) => {
 
     try {
 
-        const cliente = await Cliente.findByPk(
+        const usuario = await User.findByPk(
 
             req.params.id
 
         );
 
-        if (!cliente) {
+        if (!usuario) {
 
             return res.status(404).json({
 
-                error: "Cliente no encontrado"
+                error: "Usuario no encontrado"
 
             });
 
         }
 
-        await cliente.update(req.body);
+        await usuario.update(req.body);
 
-        res.json(cliente);
+        res.json(usuario);
 
     }
 
@@ -146,7 +142,7 @@ const actualizarCliente = async (req, res) => {
 
         res.status(500).json({
 
-            error: "Error actualizando cliente"
+            error: "Error actualizando usuario"
 
         });
 
@@ -158,31 +154,31 @@ const actualizarCliente = async (req, res) => {
 // ELIMINAR
 // ======================================
 
-const eliminarCliente = async (req, res) => {
+const eliminarUsuario = async (req, res) => {
 
     try {
 
-        const cliente = await Cliente.findByPk(
+        const usuario = await User.findByPk(
 
             req.params.id
 
         );
 
-        if (!cliente) {
+        if (!usuario) {
 
             return res.status(404).json({
 
-                error: "Cliente no encontrado"
+                error: "Usuario no encontrado"
 
             });
 
         }
 
-        await cliente.destroy();
+        await usuario.destroy();
 
         res.json({
 
-            mensaje: "Cliente eliminado correctamente"
+            mensaje: "Usuario eliminado correctamente"
 
         });
 
@@ -194,7 +190,7 @@ const eliminarCliente = async (req, res) => {
 
         res.status(500).json({
 
-            error: "Error eliminando cliente"
+            error: "Error eliminando usuario"
 
         });
 
@@ -204,14 +200,14 @@ const eliminarCliente = async (req, res) => {
 
 module.exports = {
 
-    obtenerClientes,
+    obtenerUsuarios,
 
-    obtenerCliente,
+    obtenerUsuario,
 
-    crearCliente,
+    crearUsuario,
 
-    actualizarCliente,
+    actualizarUsuario,
 
-    eliminarCliente
+    eliminarUsuario
 
 };

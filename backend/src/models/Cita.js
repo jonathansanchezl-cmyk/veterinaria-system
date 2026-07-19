@@ -88,4 +88,17 @@ const Cita = sequelize.define(
     }
 );
 
+const HistoriaClinica = require("./HistoriaClinica");
+
+Cita.hasOne(HistoriaClinica, {
+    foreignKey: "id_cita",
+    as: "historia"
+});
+
+HistoriaClinica.belongsTo(Cita, {
+    foreignKey: "id_cita",
+    as: "cita"
+});
+
+
 module.exports = Cita;

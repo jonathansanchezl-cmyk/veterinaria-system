@@ -1,71 +1,160 @@
-const Doctor =
-require("../models/Doctor");
+const Doctor = require("../models/Doctor");
 
 // ======================================
-// OBTENER DOCTORES
+// OBTENER TODOS
 // ======================================
 
-const obtenerDoctores =
-async (req, res) => {
+const obtenerDoctores = async (req, res) => {
 
-  try {
+    try {
 
-    const doctores =
-      await Doctor.findAll({
+        const doctores = await Doctor.findAll({
 
-        order: [["nombres", "ASC"]]
+            order: [
 
-      });
+                ["nombres", "ASC"]
 
-    res.json(
-      doctores
-    );
+            ]
 
-  } catch (error) {
+        });
 
-    console.log(error);
+        res.json(doctores);
 
-    res.status(500).json({
+    }
 
-      mensaje:
-        "Error obteniendo doctores"
+    catch (error) {
 
-    });
+        console.error(error);
 
-  }
+        res.status(500).json({
+
+            error: "Error obteniendo doctores"
+
+        });
+
+    }
 
 };
 
 // ======================================
-// CREAR DOCTOR
+// OBTENER UNO
 // ======================================
 
-const crearDoctor =
-async (req, res) => {
+const obtenerDoctor = async (req, res) => {
 
-  try {
+    try {
 
-    const doctor =
-      await Doctor.create(
-        req.body
-      );
+        const doctor = await Doctor.findByPk(
 
-    res.json(
-      doctor
-    );
+            req.params.id
 
-  } catch (error) {
+        );
 
-    console.log(error);
+        if (!doctor) {
 
-    res.status(500).json({
+            return res.status(404).json({
 
-      mensaje:
-        "Error creando doctor"
+                error: "Doctor no encontrado"
 
-    });
+            });
 
-  }
+        }
+
+        res.json(doctor);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error obteniendo doctor"
+
+        });
+
+    }
+
+};
+
+// ======================================
+// CREAR
+// ======================================
+
+const crearDoctor = async (req, res) => {
+
+    try {
+
+        const doctor = await Doctor.create(
+
+            req.body
+
+        );
+
+        res.status(201).json(doctor);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error creando doctor"
+
+        });
+
+    }
+
+};
+
+// ======================================
+// ACTUALIZAR
+// ======================================
+
+const actualizarDoctor = async (req, res) => {
+
+    try {
+
+        const doctor = await Doctor.findByPk(
+
+            req.params.id
+
+        );
+
+        if (!doctor) {
+
+            return res.status(404).json({
+
+                error: "Doctor no encontrado"
+
+            });
+
+        }
+
+        await doctor.update(
+
+            req.body
+
+        );
+
+        res.json(doctor);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error actualizando doctor"
+
+        });
+
+    }
 
 };
 
@@ -73,48 +162,60 @@ async (req, res) => {
 // ELIMINAR
 // ======================================
 
-const eliminarDoctor =
-async (req, res) => {
+const eliminarDoctor = async (req, res) => {
 
-  try {
+    try {
 
-    await Doctor.destroy({
+        const doctor = await Doctor.findByPk(
 
-      where: {
+            req.params.id
 
-        id:
-          req.params.id
+        );
 
-      }
+        if (!doctor) {
 
-    });
+            return res.status(404).json({
 
-    res.json({
+                error: "Doctor no encontrado"
 
-      mensaje:
-        "Doctor eliminado"
+            });
 
-    });
+        }
 
-  } catch (error) {
+        await doctor.destroy();
 
-    console.log(error);
+        res.json({
 
-    res.status(500).json({
+            mensaje: "Doctor eliminado correctamente"
 
-      mensaje:
-        "Error eliminando doctor"
+        });
 
-    });
+    }
 
-  }
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error eliminando doctor"
+
+        });
+
+    }
 
 };
 
 module.exports = {
 
-  obtenerDoctores,
-  crearDoctor,
-  eliminarDoctor
+    obtenerDoctores,
+
+    obtenerDoctor,
+
+    crearDoctor,
+
+    actualizarDoctor,
+
+    eliminarDoctor
 
 };

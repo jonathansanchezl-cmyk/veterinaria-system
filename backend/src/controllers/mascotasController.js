@@ -1,8 +1,8 @@
 const Mascota = require("../models/Mascota");
 
-// ======================================================
-// OBTENER MASCOTAS
-// ======================================================
+// ======================================
+// OBTENER TODAS
+// ======================================
 
 const obtenerMascotas = async (req, res) => {
 
@@ -12,7 +12,6 @@ const obtenerMascotas = async (req, res) => {
 
         const where = {};
 
-        // Filtrar por cliente si viene el parámetro
         if (cliente) {
 
             where.id_cliente = cliente;
@@ -49,18 +48,67 @@ const obtenerMascotas = async (req, res) => {
 
 };
 
+// ======================================
+// OBTENER UNA
+// ======================================
 
-// ======================================================
-// CREAR MASCOTA
-// ======================================================
+const obtenerMascota = async (req, res) => {
+
+    try {
+
+        const mascota = await Mascota.findByPk(
+
+            req.params.id
+
+        );
+
+        if (!mascota) {
+
+            return res.status(404).json({
+
+                error: "Mascota no encontrada"
+
+            });
+
+        }
+
+        res.json(mascota);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error obteniendo mascota"
+
+        });
+
+    }
+
+};
+
+// ======================================
+// CREAR
+// ======================================
 
 const crearMascota = async (req, res) => {
 
     try {
 
-        const mascota = await Mascota.create(req.body);
+        const mascota = await Mascota.create(
 
-        res.status(201).json(mascota);
+            req.body
+
+        );
+
+        res.status(201).json(
+
+            mascota
+
+        );
 
     }
 
@@ -78,26 +126,21 @@ const crearMascota = async (req, res) => {
 
 };
 
+// ======================================
+// ACTUALIZAR
+// ======================================
 
-// ======================================================
-// ELIMINAR MASCOTA
-// ======================================================
-
-const eliminarMascota = async (req, res) => {
+const actualizarMascota = async (req, res) => {
 
     try {
 
-        const eliminadas = await Mascota.destroy({
+        const mascota = await Mascota.findByPk(
 
-            where: {
+            req.params.id
 
-                id: req.params.id
+        );
 
-            }
-
-        });
-
-        if (!eliminadas) {
+        if (!mascota) {
 
             return res.status(404).json({
 
@@ -106,6 +149,60 @@ const eliminarMascota = async (req, res) => {
             });
 
         }
+
+        await mascota.update(
+
+            req.body
+
+        );
+
+        res.json(
+
+            mascota
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: "Error actualizando mascota"
+
+        });
+
+    }
+
+};
+
+// ======================================
+// ELIMINAR
+// ======================================
+
+const eliminarMascota = async (req, res) => {
+
+    try {
+
+        const mascota = await Mascota.findByPk(
+
+            req.params.id
+
+        );
+
+        if (!mascota) {
+
+            return res.status(404).json({
+
+                error: "Mascota no encontrada"
+
+            });
+
+        }
+
+        await mascota.destroy();
 
         res.json({
 
@@ -129,12 +226,15 @@ const eliminarMascota = async (req, res) => {
 
 };
 
-
 module.exports = {
 
     obtenerMascotas,
 
+    obtenerMascota,
+
     crearMascota,
+
+    actualizarMascota,
 
     eliminarMascota
 

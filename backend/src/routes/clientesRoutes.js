@@ -1,41 +1,79 @@
-const express =
-  require("express");
+const express = require("express");
 
-const router =
-  express.Router();
+const router = express.Router();
 
 const {
 
-  obtenerClientes,
+    obtenerClientes,
 
-  crearCliente,
+    obtenerCliente,
 
-  eliminarCliente
+    crearCliente,
 
-} = require(
+    actualizarCliente,
 
-  "../controllers/clientesController"
+    eliminarCliente
 
-);
+} = require("../controllers/clientesController");
 
 // ======================================
-// RUTAS
+// LISTAR TODOS
 // ======================================
 
 router.get(
-  "/",
-  obtenerClientes
+
+    "/",
+
+    obtenerClientes
+
 );
+
+// ======================================
+// OBTENER UNO
+// ======================================
+
+router.get(
+
+    "/:id",
+
+    obtenerCliente
+
+);
+
+// ======================================
+// CREAR
+// ======================================
 
 router.post(
-  "/",
-  crearCliente
+
+    "/",
+
+    crearCliente
+
 );
+
+// ======================================
+// ACTUALIZAR
+// ======================================
+
+router.put(
+
+    "/:id",
+
+    actualizarCliente
+
+);
+
+// ======================================
+// ELIMINAR
+// ======================================
 
 router.delete(
-  "/:id",
-  eliminarCliente
+
+    "/:id",
+
+    eliminarCliente
+
 );
 
-module.exports =
-  router;
+module.exports = router;

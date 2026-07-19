@@ -4,17 +4,17 @@ const router = express.Router();
 
 const {
 
-    obtenerDoctores,
+    obtenerUsuarios,
 
-    obtenerDoctor,
+    obtenerUsuario,
 
-    crearDoctor,
+    crearUsuario,
 
-    actualizarDoctor,
+    actualizarUsuario,
 
-    eliminarDoctor
+    eliminarUsuario
 
-} = require("../controllers/doctoresController");
+} = require("../controllers/usuariosController");
 
 // ======================================
 // OBTENER TODOS
@@ -24,7 +24,7 @@ router.get(
 
     "/",
 
-    obtenerDoctores
+    obtenerUsuarios
 
 );
 
@@ -36,7 +36,7 @@ router.get(
 
     "/:id",
 
-    obtenerDoctor
+    obtenerUsuario
 
 );
 
@@ -48,7 +48,7 @@ router.post(
 
     "/",
 
-    crearDoctor
+    crearUsuario
 
 );
 
@@ -60,7 +60,7 @@ router.put(
 
     "/:id",
 
-    actualizarDoctor
+    actualizarUsuario
 
 );
 
@@ -72,7 +72,7 @@ router.delete(
 
     "/:id",
 
-    eliminarDoctor
+    eliminarUsuario
 
 );
 

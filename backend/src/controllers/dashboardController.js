@@ -1,140 +1,222 @@
-const Cita =
-require("../models/Cita");
+const { fn, col, Op } = require("sequelize");
+const sequelize = require("../config/database");
 
-const { Op } =
-require("sequelize");
+const Cliente = require("../models/Cliente");
+const Mascota = require("../models/Mascota");
+const Doctor = require("../models/Doctor");
+const User = require("../models/User");
+const Cita = require("../models/Cita");
 
-// ======================================
-// DASHBOARD
-// ======================================
+const obtenerDashboard = async (req, res) => {
 
-const obtenerDashboard =
-async (req, res) => {
+    try {
 
-  try {
+        // =====================================================
+        // FECHA Y HORA DEL SERVIDOR MYSQL
+        // =====================================================
 
-    // FECHA ACTUAL
+        const [resultadoFecha] = await sequelize.query(`
+            SELECT
+                CURDATE() AS fecha,
+                CURTIME() AS hora
+        `);
 
-    const hoy =
-      new Date()
-      .toLocaleDateString(
-        "en-CA"
-      );
+        const fechaHoy = resultadoFecha[0].fecha;
+        const horaActual = resultadoFecha[0].hora;
 
-    // ======================================
-    // CITAS DEL DIA
-    // ======================================
+        console.log("======================================");
+        console.log("Fecha MySQL :", fechaHoy);
+        console.log("Hora  MySQL :", horaActual);
+        console.log("======================================");
 
-    const citasHoy =
-      await Cita.findAll({
+        const [
 
-        where: {
-          fecha: hoy
-        },
+            clientes,
+            mascotas,
+            veterinarios,
+            usuarios,
+            citas,
+            agendaHoy,
+            ultimasMascotas,
+            especies,
+            citasPorVeterinario,
+            ingresos
 
-        order: [
-          ["hora", "ASC"]
-        ]
+        ] = await Promise.all([
 
-      });
+            Cliente.count(),
 
-    // ======================================
-    // TOTAL CITAS
-    // ======================================
+            Mascota.count(),
 
-    const totalCitas =
-      citasHoy.length;
+            Doctor.count(),
 
-    // ======================================
-    // INGRESOS
-    // ======================================
+            User.count(),
 
-    let ingresos = 0;
+            Cita.count(),
 
-    citasHoy.forEach(
-      (cita) => {
+            // ==========================================
+            // PRÓXIMA CITA
+            // ==========================================
 
-        ingresos +=
-          Number(
-            cita.costo || 0
-          );
+            Cita.findAll({
 
-      }
-    );
+                where: {
 
-    // ======================================
-    // PROXIMA CITA
-    // ======================================
+                    estado: "CONFIRMADA",
 
-    const ahora =
-      new Date();
+                    [Op.or]: [
 
-    const horaActual =
-      ahora.toLocaleTimeString(
-        "en-GB",
-        {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      );
+                        // Fechas posteriores a hoy
 
-    const proxima =
-      await Cita.findOne({
+                        {
+                            fecha: {
+                                [Op.gt]: fechaHoy
+                            }
+                        },
 
-        where: {
+                        // Hoy pero aún no inicia
 
-          fecha: hoy,
+                        {
+                            fecha: fechaHoy,
 
-          hora: {
-            [Op.gte]:
-              horaActual
-          }
+                            hora: {
+                                [Op.gte]: horaActual
+                            }
+                        }
 
-        },
+                    ]
 
-        order: [
-          ["hora", "ASC"]
-        ]
+                },
 
-      });
+                order: [
 
-    // ======================================
-    // RESPUESTA
-    // ======================================
+                    ["fecha", "ASC"],
+                    ["hora", "ASC"]
 
-    res.json({
+                ],
 
-      citasHoy:
-        totalCitas,
+                limit: 1
 
-      ingresos,
+            }),
 
-      noAtendidas:
-        totalCitas,
+            // ==========================================
 
-      proxima
+            Mascota.findAll({
 
-    });
+                order: [
 
-  } catch (error) {
+                    ["id", "DESC"]
 
-    console.log(error);
+                ],
 
-    res.status(500).json({
-      error:
-        "Error dashboard"
-    });
+                limit: 5
 
-  }
+            }),
+
+            Mascota.findAll({
+
+                attributes: [
+
+                    "especie",
+
+                    [
+
+                        fn("COUNT", col("especie")),
+
+                        "total"
+
+                    ]
+
+                ],
+
+                group: [
+
+                    "especie"
+
+                ],
+
+                raw: true
+
+            }),
+
+            Cita.findAll({
+
+                attributes: [
+
+                    "doctor",
+
+                    [
+
+                        fn("COUNT", col("doctor")),
+
+                        "total"
+
+                    ]
+
+                ],
+
+                group: [
+
+                    "doctor"
+
+                ],
+
+                raw: true
+
+            }),
+
+            Cita.sum("costo", {
+
+                where: {
+
+                    estado: "ATENDIDA"
+
+                }
+
+            })
+
+        ]);
+
+        res.json({
+
+            clientes,
+            mascotas,
+            veterinarios,
+            usuarios,
+            citas,
+
+            agendaHoy,
+
+            ultimasMascotas,
+
+            especies,
+
+            citasPorVeterinario,
+
+            ingresos: Number(ingresos ?? 0)
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            success: false,
+            mensaje: "Error obteniendo dashboard",
+            error: error.message
+
+        });
+
+    }
 
 };
 
-// ======================================
-// EXPORTAR
-// ======================================
-
 module.exports = {
 
-  obtenerDashboard
+    obtenerDashboard
 
 };

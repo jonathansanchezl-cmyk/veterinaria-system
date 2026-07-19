@@ -1,33 +1,79 @@
-const express =
-require("express");
+const express = require("express");
 
-const router =
-express.Router();
+const router = express.Router();
 
 const {
 
-  obtenerMascotas,
-  crearMascota,
-  eliminarMascota
+    obtenerMascotas,
 
-} = require(
-  "../controllers/mascotasController"
-);
+    obtenerMascota,
+
+    crearMascota,
+
+    actualizarMascota,
+
+    eliminarMascota
+
+} = require("../controllers/mascotasController");
+
+// ======================================
+// LISTAR TODAS
+// ======================================
 
 router.get(
-  "/",
-  obtenerMascotas
+
+    "/",
+
+    obtenerMascotas
+
 );
+
+// ======================================
+// OBTENER UNA
+// ======================================
+
+router.get(
+
+    "/:id",
+
+    obtenerMascota
+
+);
+
+// ======================================
+// CREAR
+// ======================================
 
 router.post(
-  "/",
-  crearMascota
+
+    "/",
+
+    crearMascota
+
 );
+
+// ======================================
+// ACTUALIZAR
+// ======================================
+
+router.put(
+
+    "/:id",
+
+    actualizarMascota
+
+);
+
+// ======================================
+// ELIMINAR
+// ======================================
 
 router.delete(
-  "/:id",
-  eliminarMascota
+
+    "/:id",
+
+    eliminarMascota
+
 );
 
-module.exports =
-router;
+module.exports = router;

@@ -1,25 +1,19 @@
-const express =
-require("express");
+const express = require("express");
 
-const router =
-express.Router();
+const router = express.Router();
 
 const {
 
-  obtenerDashboard
+    obtenerDashboard
 
-} = require(
-  "../controllers/dashboardController"
-);
-
-// ======================================
-// DASHBOARD
-// ======================================
+} = require("../controllers/dashboardController");
 
 router.get(
-  "/",
-  obtenerDashboard
+
+    "/",
+
+    obtenerDashboard
+
 );
 
-module.exports =
-router;
+module.exports = router;
